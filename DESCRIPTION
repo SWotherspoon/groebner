@@ -15,3 +15,5 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+URL: https://github.com/SWotherspoon/groebner
+BugReports: https://github.com/SWotherspoon/groebner/issues
