@@ -1,0 +1,319 @@
+---
+title: "Examples"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Examples}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(groebner)
+```
+
+
+## Example 1
+
+Consider the system of polynomials
+$$
+\begin{gather*}
+x^2 - 4 x y + 4 y^2 - 4 \\
+4 x^2 - 4 x y + y^2 - 4
+\end{gather*}
+$$
+
+The `parse_polys` function reads a string representation of a set of polynomials in an arbitrary set
+of variables. however, once read the polynomials are always printed in terms of the standard 
+variables `x1`, `x2`, `x3`, ....
+```{r}
+ps <- parse_polys(c("x^2-4*x*y+4*y^2-4",
+                    "4*x^2-4*x*y+y^2-4"),
+                  c("x","y"))
+ps
+```
+
+The `groebner` function computes the Groebner basis of the system of polynomials.
+```{r}
+gb <- groebner(ps)
+gb
+```
+In this case the initial system is already a reduced Groebner basis.
+
+The roots of the system are found with the `solve_polys`
+```{r}
+solve_polys(ps,gb)
+```
+
+
+### Detail
+
+The `solve_polys` function is a wrapper that derives a monomial basis, and then computes the roots
+of the system as the eigenvalues of the matrices that represent multiplication by the standard 
+variables in the monomial basis.
+
+The monomial basis is computed by `monomial_basis`.  The basis are represented as a list of integer
+vectors specifying the powers of the standard variables in the monomial.
+```{r}
+ms <- monomial_basis(gb)
+ms
+```
+
+The matrices that represent multiplication by the standard variables in terms of the monomial basis
+are computed by `multiplication_matrix`.
+```{r}
+Ms <- lapply(1:2,function(k) multiplication_matrix(k,ms,gb))
+Ms
+```
+
+These matrices commute
+```{r}
+Ms[[1]]%*%Ms[[2]] - Ms[[2]]%*%Ms[[1]]
+```
+and a common eigenbasis that will simultaneously diagonalize these matrices is found with 
+`common_eigenbasis`.
+```{r}
+Bs <- common_eigenbasis(Ms)
+Bs
+```
+
+The candidate roots of the system are given by the eigenvalues corresponding to the vectors in the
+eigenbasis
+```{r}
+rs <- roots(Ms,Bs)
+rs
+```
+
+The total absolute error at the roots is
+```{r}
+rowSums(abs(eval_polys(ps,rs)))
+```
+
+The roots can be refined with a small number of Newton iterations.
+```{r}
+rs <- newton_polish(ps,rs,3)
+rowSums(abs(eval_polys(ps,rs)))
+```
+
+Alternately, if a common right eigenbasis is calculated from the transpose of the multiplication 
+matrices
+```{r}
+rMs <- lapply(Ms,t)
+rBs <- common_eigenbasis(rMs)
+```
+then roots can be found directly from the (right) eigenbasis provided that each standard variable
+appears as an element of the monomial basis
+```{r}
+roots_eigenvectors(ms,rBs)
+```
+
+
+### Term Orders
+
+By default, computations are performed with respect to a graded reverse lexicographic term order,
+but three standard term order functions are available:
+
+* `lex` lexicographic order
+* `grlex` graded lexicographic order
+* `grevlex` graded reverse lexicographic order
+
+and the term order can be set with `set_term_order`.  But if the term order is changed, any existing
+polynomials are left in an inconsistent state and must be redefined with `poly` to obtain valid
+polynomials.
+
+With a lexicographic term order,
+```{r}
+set_term_order(lex)
+ps <- lapply(ps,poly)
+ps
+```
+
+the groebner basis is
+```{r}
+gb <- groebner(ps)
+gb
+```
+
+
+## Example 2
+
+Consider the system of polynomials
+$$
+\begin{gather*}
+x^2 + y + z -1 \\
+x + y^2 + z -1 \\
+x + y + z^2 -1 
+\end{gather*}
+$$
+
+Define the polynomials
+```{r}
+set_term_order(grevlex)
+ps <- parse_polys(c("x^2+y+z-1",
+                    "x+y^2+z-1",
+                    "x+y+z^2-1"),
+                  c("x","y","z"))
+ps
+```
+and compute the groebner basis
+```{r}
+gb <- groebner(ps)
+gb
+```
+
+Compute the monomial basis, the multiplication matrices and their common eigenbasis
+```{r}
+ms <- monomial_basis(gb)
+Ms <- lapply(1:3,function(k) multiplication_matrix(k,ms,gb))
+Bs <- common_eigenbasis(Ms)
+```
+
+The roots of the system are
+```{r}
+rs <- roots(Ms,Bs)
+rs
+```
+
+and the total absolute error at the roots is
+```{r}
+rowSums(abs(eval_polys(ps,rs)))
+```
+
+
+## Example 3
+
+Consider the system of polynomials
+$$
+\begin{gather*}
+x^3 - 2 x y \\
+x^2 y - 2 y^2 + x
+\end{gather*}
+$$
+
+Define the polynomials
+```{r}
+set_term_order(grevlex)
+ps <- parse_polys(c("x^3 - 2*x*y",
+                    "x^2*y-2*y^2+x"),
+                  c("x","y"))
+ps
+```
+
+Compute the groebner basis
+```{r}
+gb <- groebner(ps)
+gb
+```
+
+In this case, the multiplication matrices are deficient
+```{r}
+ms <- monomial_basis(gb)
+Ms <- lapply(1:2,function(k) multiplication_matrix(k,ms,gb))
+Ms
+```
+
+The common eigenbasis is of dimension 1
+```{r}
+Bs <- common_eigenbasis(Ms)
+Bs
+```
+
+so there is only a single root
+```{r}
+rs <- roots(Ms,Bs)
+rs
+```
+
+The total absolute error at the roots is
+```{r}
+rowSums(abs(eval_polys(ps,rs)))
+```
+
+
+## Example 4
+
+Consider the system of polynomials
+$$
+\begin{gather*}
+x^3 - 5 x^2 + 8 x - 4 \\
+x^2 y + 2 x^2 - 12 x - 4 y + 16 \\
+xy + x^2 - 5 x - 2 y + 6 \\
+y^2 + 2 x - 4 y + 4
+\end{gather*}
+$$
+
+
+Define the polynomials
+```{r}
+set_term_order(grevlex)
+ps <- parse_polys(c("x^3 - 5*x^2 + 8*x - 4",
+                    "x^2*y + 2*x^2 - 12*x - 4*y + 16",
+                    "x*y + x^2 - 5*x - 2*y + 6",
+                    "y^2 + 2*x - 4*y + 4"),
+                  c("x","y"))
+ps
+```
+
+Compute the groebner basis
+```{r}
+gb <- groebner(ps)
+gb
+```
+
+The roots of the system are
+```{r}
+rs <- solve_polys(ps,gb)
+rs
+```
+
+The total absolute error at the roots is
+```{r}
+rowSums(abs(eval_polys(ps,rs)))
+```
+
+
+## Example 5
+
+Consider the system of polynomials
+$$
+\begin{gather*}
+x^3 - 5 x^2 + 8 x - 4 \\
+x^2 y + 2 x^2 - 12 x - 4 y + 16 \\
+xy + x^2 - 5 x - 2 y + 6 \\
+y^2 - x^2 + 4 x - 2 y - 3
+\end{gather*}
+$$
+
+Define the polynomials
+```{r}
+set_term_order(grevlex)
+ps <- parse_polys(c("x^3 - 5*x^2 + 8*x - 4",
+                    "x^2*y + 2*x^2 - 12*x - 4*y + 16",
+                    "x*y + x^2 - 5*x - 2*y + 6",
+                    "y^2 - x^2 + 4*x - 2*y - 3"),
+                  c("x","y"))
+ps
+```
+
+Compute the groebner basis
+```{r}
+gb <- groebner(ps)
+gb
+```
+
+The roots of the system are
+```{r}
+rs <- solve_polys(ps,gb)
+rs
+```
+
+The total absolute error at the roots is
+```{r}
+rowSums(abs(eval_polys(ps,rs)))
+```
