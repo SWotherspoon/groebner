@@ -4,22 +4,32 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of groebner is to ...
+The groebner package provides a pure R implementation of groebner bases for finding the roots of 
+polynomial systems
 
 ## Installation
 
-You can install the development version of groebner like so:
-
-``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+The current version of groebner can be installed from GitHub using the remotes package. 
+```r
+# install.packages("remotes")
+remotes::install_github("SWotherspoon/groebner")
 ```
+
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+To find the intersection of the unit circle with a hyperbola
 
 ``` r
 library(groebner)
-## basic example code
+## Define system
+ps <- parse_polys(c("x^2+y^2-1",
+                    "x*y-1/4"),
+                  c("x","y"))
+## Find roots
+rs <- solve_polys(ps)
+rs
+## Check
+rowSums(abs(eval_polys(ps,rs)))
 ```
 

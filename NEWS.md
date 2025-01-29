@@ -1,3 +1,3 @@
-# groebner (development version)
+# groebner 0.1.0
 
-* Initial CRAN submission.
+* Initial prototype.  Use with caution.
