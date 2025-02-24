@@ -838,10 +838,14 @@ eigenbasis1 <- function(A, tol=1e-6) {
 ##' @title Common eigenbasis
 ##' @param As a list of commuting matrices
 ##' @param tol tolerance used to determine if two eigenvalues differ.
+##' @param left if `TRUE`, compute a common left eigenbasis
 ##' @return a list of matrices, the columns of each matrix are the
 ##'   common eigenbasis for the corresponding matrix in `As`
 ##' @export
-common_eigenbasis <- function(As,tol=1e-6) {
+common_eigenbasis <- function(As,tol=1e-6,left=FALSE) {
+
+  ## Transpose for the left eigenbasis
+  if(left) As <- lapply(As,t)
 
   ## Compute the eigenbasis for the first matrix
   basis <- eigenbasis(As[[1L]])
@@ -870,7 +874,9 @@ common_eigenbasis <- function(As,tol=1e-6) {
 ##' @rdname common_eigenbasis
 ##' @importFrom stats runif
 ##' @export
-common_eigenbasis0 <- function(As,tol=1e-6) {
+common_eigenbasis0 <- function(As,tol=1e-6,left=FALSE) {
+  ## Transpose for the left eigenbasis
+  if(left) As <- lapply(As,t)
   ## Random linear combination of the matrices
   A <- Reduce(`+`,lapply(As,function(A) runif(1)*A))
   eigenbasis(A,tol=tol)
@@ -897,20 +903,20 @@ roots <- function(Ms,Bs,unique=TRUE) {
 }
 
 
-##' Extract the roots of a polynomial system from the right eigenvectors
+##' Extract the roots of a polynomial system from the left eigenvectors
 ##' of the multiplication matrices.
 ##'
-##' If `Bs` is a common right eigenbasis calculated from the transposed
+##' If `Bs` is a common left eigenbasis calculated from the transposed
 ##' multiplication matrices, then this function will extract the values
 ##' of the standard variables that appear in the monomials in the basis
 ##' `ms` at the roots of the polynomial system.
 ##'
 ##' @title Roots from eigenvectors
 ##' @param ms a monomial basis
-##' @param Bs a common eigenbasis
+##' @param Bs a common left eigenbasis
 ##' @return a matrix where each row is a root of the polynomial system
 ##' @export
-roots_eigenvectors <- function(ms,Bs) {
+roots_left_eigenbasis <- function(ms,Bs) {
 
   ## Find constant term
   cnst <- which(vapply(ms,function(m) all(m==0L),logical(1L)))

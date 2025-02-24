@@ -7,6 +7,14 @@
 \description{
 Groebner Basis methods for solving systems of polynomials.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/SWotherspoon/groebner}
+  \item Report bugs at \url{https://github.com/SWotherspoon/groebner/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Simon Wotherspoon \email{Simon.Wotherspoon@aad.gov.au} (\href{https://orcid.org/0000-0002-6947-4445}{ORCID})
 

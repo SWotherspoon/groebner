@@ -101,16 +101,15 @@ rs <- newton_polish(ps,rs,3)
 rowSums(abs(eval_polys(ps,rs)))
 ```
 
-Alternately, if a common right eigenbasis is calculated from the transpose of the multiplication 
-matrices
+Alternately, if a common left eigenbasis is calculated from the multiplication matrices
 ```{r}
-rMs <- lapply(Ms,t)
-rBs <- common_eigenbasis(rMs)
+lBs <- common_eigenbasis(Ms,left=TRUE)
 ```
-then roots can be found directly from the (right) eigenbasis provided that each standard variable
+then the basis elements are proportional to the values of the monomial basis at the roots, 
+and roots can be found directly from the (left) eigenbasis provided that each standard variable
 appears as an element of the monomial basis
 ```{r}
-roots_eigenvectors(ms,rBs)
+roots_left_eigenbasis(ms,lBs)
 ```
 
 
@@ -134,7 +133,7 @@ ps <- lapply(ps,poly)
 ps
 ```
 
-the groebner basis is
+the Groebner basis is
 ```{r}
 gb <- groebner(ps)
 gb
@@ -161,7 +160,7 @@ ps <- parse_polys(c("x^2+y+z-1",
                   c("x","y","z"))
 ps
 ```
-and compute the groebner basis
+and compute the Groebner basis
 ```{r}
 gb <- groebner(ps)
 gb
@@ -205,7 +204,7 @@ ps <- parse_polys(c("x^3 - 2*x*y",
 ps
 ```
 
-Compute the groebner basis
+Compute the Groebner basis
 ```{r}
 gb <- groebner(ps)
 gb
@@ -260,7 +259,7 @@ ps <- parse_polys(c("x^3 - 5*x^2 + 8*x - 4",
 ps
 ```
 
-Compute the groebner basis
+Compute the Groebner basis
 ```{r}
 gb <- groebner(ps)
 gb
@@ -301,7 +300,7 @@ ps <- parse_polys(c("x^3 - 5*x^2 + 8*x - 4",
 ps
 ```
 
-Compute the groebner basis
+Compute the Groebner basis
 ```{r}
 gb <- groebner(ps)
 gb
