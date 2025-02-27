@@ -4,7 +4,7 @@
 \alias{eigenbasis}
 \title{Eigenbasis}
 \usage{
-eigenbasis(A, tol = 1e-07)
+eigenbasis(A, tol = 1e-06)
 }
 \arguments{
 \item{A}{a matrix}
@@ -17,4 +17,11 @@ columns of each are the eigenbasis for that eigenvalue
 }
 \description{
 Compute an eigenbasis of a matrix.
+}
+\details{
+Returns a list of matrices, where the columns of each matrix
+form an orthonormal basis for an eigenspace of the matrix.
+
+If \code{tol} is too small, equal eigenvalues are erroneously identified
+as distinct, and the bases for some eigenspaces are split.
 }

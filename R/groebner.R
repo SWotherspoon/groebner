@@ -902,13 +902,19 @@ newton_polish <- function(ps,x,n) {
 
 ##' Compute an eigenbasis of a matrix.
 ##'
+##' Returns a list of matrices, where the columns of each matrix 
+##' form an orthonormal basis for an eigenspace of the matrix.
+##'
+##' If `tol` is too small, equal eigenvalues are erroneously identified
+##' as distinct, and the bases for some eigenspaces are split.
+##' 
 ##' @title Eigenbasis
 ##' @param A a matrix
 ##' @param tol tolerance used to determine if two eigenvalues differ.
 ##' @return a list of matrices, one for each distinct eigenvalue, the
 ##'   columns of each are the eigenbasis for that eigenvalue
 ##' @export
-eigenbasis <- function(A,tol=1.0E-7) {
+eigenbasis <- function(A,tol=1.0E-6) {
 
   nullspace <- function(A) {
     QR <- qr(t(A),LAPACK=TRUE)
@@ -928,14 +934,14 @@ eigenbasis <- function(A,tol=1.0E-7) {
 
 
 ## Alternate implementation of eigenbasis
-eigenbasis1 <- function(A, tol=1e-7) {
+eigenbasis1 <- function(A, tol=1e-6) {
 
   ## Compute the independent columns of a matrix
   independent <- function(X) {
     if(ncol(X) == 1L) return(X)
     QR <- qr(X,LAPACK=TRUE)
     rs <- abs(diag(qr.R(QR)))
-    rank <- sum(rs > 1.0E-12*max(rs))
+    rank <- sum(rs > 1.0E-7*max(rs))
     qr.Q(QR)[, seq_len(rank), drop = FALSE]
   }
 
@@ -961,6 +967,9 @@ eigenbasis1 <- function(A, tol=1e-7) {
 ##'
 ##'  No check is performed to ensure the matrices are commute.
 ##'
+##' If `tol` is too small, equal eigenvalues are erroneously identified
+##' as distinct, and the bases for some eigenspaces are split.
+##'
 ##' @title Common eigenbasis
 ##' @param As a list of commuting matrices
 ##' @param tol tolerance used to determine if two eigenvalues differ.
@@ -968,7 +977,7 @@ eigenbasis1 <- function(A, tol=1e-7) {
 ##' @return a list of matrices, the columns of each matrix are the
 ##'   common eigenbasis for the corresponding matrix in `As`
 ##' @export
-common_eigenbasis <- function(As,tol=1e-7,left=FALSE) {
+common_eigenbasis <- function(As,tol=1e-6,left=FALSE) {
 
   ## Transpose for the left eigenbasis
   if(left) As <- lapply(As,t)
@@ -1000,7 +1009,7 @@ common_eigenbasis <- function(As,tol=1e-7,left=FALSE) {
 ##' @rdname common_eigenbasis
 ##' @importFrom stats runif
 ##' @export
-common_eigenbasis0 <- function(As,tol=1e-7,left=FALSE) {
+common_eigenbasis0 <- function(As,tol=1e-6,left=FALSE) {
   ## Transpose for the left eigenbasis
   if(left) As <- lapply(As,t)
   ## Random linear combination of the matrices
@@ -1070,7 +1079,7 @@ roots_left_eigenbasis <- function(ms,Bs) {
 ##' @param tol tolerance used to determine if two eigenvalues differ.
 ##' @return a matrix where each row is a root of the polynomial system
 ##' @export
-solve_polys <- function(ps,gb=groebner(ps),newton=0,tol=1.0E-7) {
+solve_polys <- function(ps,gb=groebner(ps),newton=0,tol=1.0E-6) {
   ms <- monomial_basis(gb)
   Ms <- lapply(seq_along(ms[[1]]),function(m) multiplication_matrix(m,ms,gb))
   Bs <- common_eigenbasis(Ms,tol=tol)

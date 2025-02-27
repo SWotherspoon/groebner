@@ -5,9 +5,9 @@
 \alias{common_eigenbasis0}
 \title{Common eigenbasis}
 \usage{
-common_eigenbasis(As, tol = 1e-07, left = FALSE)
+common_eigenbasis(As, tol = 1e-06, left = FALSE)
 
-common_eigenbasis0(As, tol = 1e-07, left = FALSE)
+common_eigenbasis0(As, tol = 1e-06, left = FALSE)
 }
 \arguments{
 \item{As}{a list of commuting matrices}
@@ -35,4 +35,7 @@ basis to align with the eigenbasis of each subsequent matrix.
 eigenbasis of a random linear combination of the matrices.
 
 No check is performed to ensure the matrices are commute.
+
+If \code{tol} is too small, equal eigenvalues are erroneously identified
+as distinct, and the bases for some eigenspaces are split.
 }
