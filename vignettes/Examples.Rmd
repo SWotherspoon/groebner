@@ -229,7 +229,7 @@ rs <- roots(Ms,Bs)
 rs
 ```
 
-The total absolute error at the roots is
+The total absolute error at the root is
 ```{r}
 rowSums(abs(eval_polys(ps,rs)))
 ```
