@@ -4,7 +4,7 @@
 \alias{solve_polys}
 \title{Roots of a polynomial system}
 \usage{
-solve_polys(ps, gb = groebner(ps), newton = 0, tol = 1e-06)
+solve_polys(ps, gb = groebner(ps), newton = 0, tol = 1e-07)
 }
 \arguments{
 \item{ps}{a list of polynomials}

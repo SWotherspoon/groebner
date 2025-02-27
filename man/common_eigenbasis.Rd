@@ -5,9 +5,9 @@
 \alias{common_eigenbasis0}
 \title{Common eigenbasis}
 \usage{
-common_eigenbasis(As, tol = 1e-06, left = FALSE)
+common_eigenbasis(As, tol = 1e-07, left = FALSE)
 
-common_eigenbasis0(As, tol = 1e-06, left = FALSE)
+common_eigenbasis0(As, tol = 1e-07, left = FALSE)
 }
 \arguments{
 \item{As}{a list of commuting matrices}

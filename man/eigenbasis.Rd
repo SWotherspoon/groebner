@@ -4,7 +4,7 @@
 \alias{eigenbasis}
 \title{Eigenbasis}
 \usage{
-eigenbasis(A, tol = 1e-06)
+eigenbasis(A, tol = 1e-07)
 }
 \arguments{
 \item{A}{a matrix}

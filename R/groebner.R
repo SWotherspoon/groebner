@@ -803,11 +803,12 @@ newton_polish <- function(ps,x,n) {
 ##' @return a list of matrices, one for each distinct eigenvalue, the
 ##'   columns of each are the eigenbasis for that eigenvalue
 ##' @export
-eigenbasis <- function(A,tol=1.0E-6) {
+eigenbasis <- function(A,tol=1.0E-7) {
 
   nullspace <- function(A) {
     QR <- qr(t(A),LAPACK=TRUE)
-    rank <- sum(abs(diag(qr.R(QR))) > 1.0E-12)
+    rs <- abs(diag(qr.R(QR)))
+    rank <- sum(rs > 1.0E-12*max(rs))
     if(rank==ncol(A)) return(matrix(0,nrow(A),0))
     if(rank==0) return(diag(1,nrow(A)))
     qr.Q(QR,complete=TRUE)[,-seq_len(rank),drop=FALSE]
@@ -822,12 +823,14 @@ eigenbasis <- function(A,tol=1.0E-6) {
 
 
 ## Alternate implementation of eigenbasis
-eigenbasis1 <- function(A, tol=1e-6) {
+eigenbasis1 <- function(A, tol=1e-7) {
 
   ## Compute the independent columns of a matrix
   independent <- function(X) {
+    if(ncol(X) == 1L) return(X)
     QR <- qr(X,LAPACK=TRUE)
-    rank <- sum(abs(diag(qr.R(QR))) > 1.0E-12)
+    rs <- abs(diag(qr.R(QR)))
+    rank <- sum(rs > 1.0E-12*max(rs))
     qr.Q(QR)[, seq_len(rank), drop = FALSE]
   }
 
@@ -860,7 +863,7 @@ eigenbasis1 <- function(A, tol=1e-6) {
 ##' @return a list of matrices, the columns of each matrix are the
 ##'   common eigenbasis for the corresponding matrix in `As`
 ##' @export
-common_eigenbasis <- function(As,tol=1e-6,left=FALSE) {
+common_eigenbasis <- function(As,tol=1e-7,left=FALSE) {
 
   ## Transpose for the left eigenbasis
   if(left) As <- lapply(As,t)
@@ -880,7 +883,7 @@ common_eigenbasis <- function(As,tol=1e-6,left=FALSE) {
         Ak <- crossprod(Conj(basis[[i]]),A)%*%basis[[i]]
         bs <- eigenbasis(Ak,tol=tol)
         for(k in seq_along(bs))
-          basis1[[m <- m+1L]] <- basis[[i]]%*%bs[[k]]
+          basis1[[m <- m+1L]] <- basis[[i]]%*%Conj(bs[[k]])
       }
     }
     basis <- basis1[seq_len(m)]
@@ -892,7 +895,7 @@ common_eigenbasis <- function(As,tol=1e-6,left=FALSE) {
 ##' @rdname common_eigenbasis
 ##' @importFrom stats runif
 ##' @export
-common_eigenbasis0 <- function(As,tol=1e-6,left=FALSE) {
+common_eigenbasis0 <- function(As,tol=1e-7,left=FALSE) {
   ## Transpose for the left eigenbasis
   if(left) As <- lapply(As,t)
   ## Random linear combination of the matrices
@@ -917,7 +920,7 @@ common_eigenbasis0 <- function(As,tol=1e-6,left=FALSE) {
 ##' @export
 roots <- function(Ms,Bs,unique=TRUE) {
   if(unique) Bs <- lapply(Bs,function(B) B[,1,drop=FALSE])
-  do.call(cbind,lapply(Ms,function(M) do.call(c,lapply(Bs,function(B) diag(crossprod(Conj(B),M)%*%B)))) )
+  do.call(cbind,lapply(Ms,function(M) do.call(c,lapply(Bs,function(B) diag(crossprod(Conj(B),M)%*%B)))))
 }
 
 
@@ -963,7 +966,7 @@ roots_left_eigenbasis <- function(ms,Bs) {
 ##' @param tol tolerance used to determine if two eigenvalues differ.
 ##' @return a matrix where each row is a root of the polynomial system
 ##' @export
-solve_polys <- function(ps,gb=groebner(ps),newton=0,tol=1.0E-6) {
+solve_polys <- function(ps,gb=groebner(ps),newton=0,tol=1.0E-7) {
   ms <- monomial_basis(gb)
   Ms <- lapply(seq_along(ms[[1]]),function(m) multiplication_matrix(m,ms,gb))
   Bs <- common_eigenbasis(Ms,tol=tol)
