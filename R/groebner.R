@@ -994,10 +994,10 @@ common_eigenbasis <- function(As,tol=1e-6,left=FALSE) {
       if(ncol(basis[[i]])==1L) {
         basis1[[m <- m+1L]] <- basis[[i]]
       } else {
-        Ak <- crossprod(Conj(basis[[i]]),A)%*%basis[[i]]
+        Ak <- crossprod(Conj(basis[[i]]),A%*%basis[[i]])
         bs <- eigenbasis(Ak,tol=tol)
         for(k in seq_along(bs))
-          basis1[[m <- m+1L]] <- basis[[i]]%*%Conj(bs[[k]])
+          basis1[[m <- m+1L]] <- basis[[i]]%*%bs[[k]]
       }
     }
     basis <- basis1[seq_len(m)]
@@ -1034,7 +1034,7 @@ common_eigenbasis0 <- function(As,tol=1e-6,left=FALSE) {
 ##' @export
 roots <- function(Ms,Bs,unique=TRUE) {
   if(unique) Bs <- lapply(Bs,function(B) B[,1,drop=FALSE])
-  do.call(cbind,lapply(Ms,function(M) do.call(c,lapply(Bs,function(B) diag(crossprod(Conj(B),M)%*%B)))))
+  do.call(cbind,lapply(Ms,function(M) do.call(c,lapply(Bs,function(B) diag(crossprod(Conj(B),M%*%B))))))
 }
 
 
