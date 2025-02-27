@@ -5,12 +5,12 @@
 \alias{.poly}
 \title{Polynomials}
 \usage{
-poly(lst)
+poly(tms)
 
-.poly(lst)
+.poly(tms)
 }
 \arguments{
-\item{lst}{a list of monomials}
+\item{tms}{a list of monomials}
 }
 \value{
 a poly object
@@ -20,11 +20,15 @@ Create a polynomial
 }
 \details{
 A polynomial is represented as a list of monomials, sorted
-according to the term order.
+according to the term order, where no two terms have the same
+exponents and no term has coefficient zero.
 
 If the term order is changed, any existing polynomials are left in
 an inconsistent state and \code{\link[=poly]{poly()}} should be applied to recover a
 valid polynomial.
+
+\code{poly} reduces the list of terms to normal form, \code{.poly} assumes
+the list is already in normal form and simply sets the class.
 }
 \seealso{
 \code{\link[=pterm]{pterm()}} \code{\link[=set_term_order]{set_term_order()}}

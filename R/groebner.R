@@ -116,34 +116,52 @@ get_term_order <- function(order = grevlex) {
 ##' Create a polynomial
 ##'
 ##' A polynomial is represented as a list of monomials, sorted
-##' according to the term order.
+##' according to the term order, where no two terms have the same
+##' exponents and no term has coefficient zero.
 ##'
 ##' If the term order is changed, any existing polynomials are left in
 ##' an inconsistent state and [poly()] should be applied to recover a
 ##' valid polynomial.
 ##'
+##' `poly` reduces the list of terms to normal form, `.poly` assumes
+##' the list is already in normal form and simply sets the class.
+##
 ##' @title Polynomials
-##' @param lst a list of monomials
+##' @param tms a list of monomials
 ##' @return a poly object
 ##' @seealso [pterm()] [set_term_order()]
 ##' @export
-poly <- function(lst) {
-  r <- sort_terms(lst)
-  class(r) <- "poly"
-  r
+poly <- function(tms) {
+  tms <- sort_terms(tms)
+
+  ## Combine repeated terms
+  l <- 0L
+  nxt <- 1L
+  while(nxt <= length(tms)) {
+    tm <- tms[[nxt]]
+    nxt <- nxt+1L
+    while(nxt <= length(tms) && identical(tm$expt,tms[[nxt]]$expt)) {
+      tm$coef <- tm$coef+tms[[nxt]]$coef
+      nxt <- nxt+1L
+    }
+    if(tm$coef != 0L) tms[[l <- l+1L]] <- tm
+  }
+  if(l < length(tms)) tms <- tms[seq_len(l)]
+  .poly(tms)
 }
 
 ##' @rdname poly
 ##' @export
-.poly <- function(lst) {
-  class(lst) <- "poly"
-  lst
+.poly <- function(tms) {
+  class(tms) <- "poly"
+  tms
 }
 
 
 ## as.character method for poly
 ##' @export
 as.character.poly <- function(x,...) {
+  if(length(x)==0L) return("0")
   p <- paste0(sapply(x, as.character), collapse = "")
   if(substr(p,1,1)=="+") substr(p,2,nchar(p)) else p
 }
