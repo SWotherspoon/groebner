@@ -9,6 +9,7 @@
 ##' @param expt vector of variable exponents
 ##' @seealso [poly()]
 ##' @return a pterm object
+##' @export
 pterm <- function(coef, expt) {
   r <- list(coef=coef, expt=as.integer(expt))
   class(r) <- "pterm"
@@ -382,6 +383,110 @@ eval_poly <- function(p,x) {
 ##' @export
 eval_polys <- function(ps,x) {
   do.call(cbind,lapply(ps,eval_poly,x=x))
+}
+
+
+##' Form the sum a*px + py where px and py are polynomials and a is a
+##' monomial term.
+##'
+##' @title Polynomial axpy
+##' @param acoef the coefficient of a
+##' @param aexpt the exponent of a
+##' @param px a polynomial
+##' @param py a polynomial
+##' @return the polynomial a*px + py
+##' @export
+poly_axpy <- function(acoef=1L,aexpt=0L,px,py) {
+
+  lx <- length(px)
+  if(lx==0L) return(py)
+  ly <- length(py)
+
+  tm_order <- term_order$order
+
+  r <- vector("list",lx+ly)
+  l <- 0L
+  ix <- 0L
+  iy <- 0L
+
+  while(ix < lx || iy < ly) {
+
+    ## py exhausted - copy remaining terms from px
+    if(iy == ly) {
+      while(ix < lx) {
+        ix <- ix+1L
+        r[[l<-l+1L]] <- pterm(px[[ix]]$coef*acoef,px[[ix]]$expt+aexpt)
+      }
+      break
+    }
+
+    ## px exhausted - copy remaining terms from py
+    if(ix == lx) {
+      while(iy < ly) r[[l<-l+1L]] <- py[[iy <- iy+1L]]
+      break
+    }
+
+    ## Merge terms
+    ix <- ix+1L
+    axcoef <- px[[ix]]$coef*acoef
+    axexpt <- px[[ix]]$expt+aexpt
+    ## Insert greater terms from py
+    while(iy < ly && (ord <- tm_order(py[[iy+1L]]$expt,axexpt))>0) r[[l<-l+1L]] <- py[[iy<-iy+1L]]
+    ## Insert scaled term
+    if(iy < ly && ord == 0) {
+      coef <- axcoef + py[[iy <- iy+1L]]$coef
+      if(coef != 0) r[[l<-l+1L]] <- pterm(coef,axexpt)
+    } else {
+      r[[l<-l+1L]] <- pterm(axcoef,axexpt)
+    }
+  }
+  if(length(r) != l) r <- r[seq_len(l)]
+  class(r) <- "poly"
+  r
+}
+
+##' Polynomial arithmetic
+##'
+##' `poly_add` computes p1+p2, `poly_sub` computes p1-p2, `poly_mul`
+##' computes p1*p2, and `poly_scale` computes a*p where a is a scalar.
+##' @title Polynomial arithmetic
+##' @param p1 a polynomial
+##' @param p2 a polynomial
+##' @param a a scalar
+##' @return a polynomial
+##' @rdname poly_arithetic
+##' @export
+poly_add <- function(p1,p2) {
+  poly_axpy(1L,0L,p1,p2)
+}
+
+##' @rdname poly_arithetic
+##' @export
+poly_sub <- function(p1,p2) {
+  poly_axpy(-1L,0L,p2,p1)
+}
+
+##' @rdname poly_arithetic
+##' @export
+poly_mul <- function(p1,p2) {
+  r <- list()
+  if(length(p1) < length(p2))
+    for(tm in p1) r <- poly_axpy(tm$coef,tm$expt,p2,r)
+  else
+    for(tm in p2) r <- poly_axpy(tm$coef,tm$expt,p1,r)
+  class(r) <- "poly"
+  r
+}
+
+##' @rdname poly_arithetic
+##' @export
+poly_scale <- function(a,p1) {
+  if(a==0)
+    p1 <- list()
+  else
+    for(k in seq_along(p1)) p1[[k]]$coef <- p1[[k]]$coef*a
+  class(p1) <- "poly"
+  p1
 }
 
 
@@ -954,7 +1059,6 @@ roots_left_eigenbasis <- function(ms,Bs) {
   colnames(roots) <- paste0("x",vr)
   roots
 }
-
 
 
 ##' Find the roots of a polynomial system
