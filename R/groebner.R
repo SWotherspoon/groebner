@@ -20,13 +20,11 @@ pterm <- function(coef, expt) {
 ##' @export
 as.character.pterm <- function(x,...) {
   keep <- which(x$expt != 0L)
-  sgn <- if(x$coef >= 0) "+" else "-"
-  cf <- abs(x$coef)
   if(length(keep)) {
     tm <- paste0("x",keep,ifelse(x$expt[keep]!=1L,paste0("^",x$expt[keep]),""),collapse="*")
-    if(cf!=1) paste0(sgn,cf,"*",tm) else paste0(sgn,tm)
+    if(x$coef!=1) paste0(x$coef,"*",tm) else tm
   } else {
-    paste0(sgn,cf)
+    as.character(x$coef)
   }
 }
 
@@ -162,9 +160,11 @@ poly <- function(tms) {
 ## as.character method for poly
 ##' @export
 as.character.poly <- function(x,...) {
+  sign <- function(tm) if(substr(tm,1,1)=="-") tm else paste0("+",tm)
   if(length(x)==0L) return("0")
-  p <- paste0(sapply(x, as.character), collapse = "")
-  if(substr(p,1,1)=="+") substr(p,2,nchar(p)) else p
+  x <- vapply(x, as.character,character(1))
+  if(length(x) > 1L) x[-1] <- vapply(x[-1],sign,character(1))
+  paste0(x,collapse="")
 }
 
 ## Print method for poly
