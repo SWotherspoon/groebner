@@ -1013,8 +1013,9 @@ common_eigenbasis0 <- function(As,tol=1e-6,left=FALSE) {
   ## Transpose for the left eigenbasis
   if(left) As <- lapply(As,t)
   ## Random linear combination of the matrices
-  A <- Reduce(`+`,lapply(As,function(A) runif(1)*A))
-  eigenbasis(A,tol=tol)
+  S <- 0
+  for(A in As) S <- S+runif(1)*A
+  eigenbasis(S,tol=tol)
 }
 
 
