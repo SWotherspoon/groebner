@@ -445,6 +445,36 @@ poly_axpy <- function(acoef=1L,aexpt=0L,px,py) {
   r
 }
 
+
+##' Change the variable order of a polynomial
+##'
+##' Permute the variables in a polynomial according to a permutation
+##' vector `order`.  For example, if `order` is `c(3,2,1)`,then the 
+##' standard variables `x1` and `x3` are interchanged and the terms 
+##' are reordered according to the term order.
+##'
+##' If `order` specifies more or fewer variables than are present in the
+##' current variable set, the exponent vectors are resized to encode the
+##' new variable set.
+##'
+##' @title Reorder variables
+##' @param p a polynomial
+##' @param order an integer vector defining the new variable order
+##' @return a polynomial with the variables in the new order
+##' @export
+reorder_vars <- function(p,order) {
+  if(any(duplicated(order))) warning("Invalid variable permutation")
+  l <- length(order)
+
+  reorder <- function(expt) {
+    if(length(expt) < l) expt <- c(expt,integer(l-length(expt)))
+    expt[order]
+  }
+  
+  poly(lapply(p,function(tm) pterm(tm$coef,reorder(tm$expt))))
+}
+
+
 ##' Polynomial arithmetic
 ##'
 ##' `poly_add` computes p1+p2, `poly_sub` computes p1-p2, `poly_mul`
@@ -1088,5 +1118,4 @@ solve_polys <- function(ps,gb=groebner(ps),newton=0,tol=1.0E-6) {
   if(newton>0) rs <- newton_polish(ps,rs,newton)
   rs
 }
-
 
