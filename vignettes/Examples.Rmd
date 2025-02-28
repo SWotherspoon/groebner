@@ -30,14 +30,15 @@ x^2 - 4 x y + 4 y^2 - 4 \\
 $$
 
 The `parse_polys` function reads a string representation of a set of polynomials in an arbitrary set
-of variables. however, once read the polynomials are always printed in terms of the standard 
-variables `x1`, `x2`, `x3`, ....
+of variables which are translated to the standard variables `x1`, `x2`, `x3`, ..., 
 ```{r}
 ps <- parse_polys(c("x^2-4*x*y+4*y^2-4",
                     "4*x^2-4*x*y+y^2-4"),
                   c("x","y"))
 ps
 ```
+The coefficients of the polynomials created by `parse_polys` are stored as rationals using the 
+`bigq` class from the `gmp` package.
 
 The `groebner` function computes the Groebner basis of the system of polynomials.
 ```{r}
@@ -95,7 +96,7 @@ The total absolute error at the roots is
 rowSums(abs(eval_polys(ps,rs)))
 ```
 
-The roots can be refined with a small number of Newton iterations.
+The roots can be refined by Newton iteration
 ```{r}
 rs <- newton_polish(ps,rs,3)
 rowSums(abs(eval_polys(ps,rs)))
@@ -138,6 +139,7 @@ the Groebner basis is
 gb <- groebner(ps)
 gb
 ```
+
 
 
 ## Example 2
@@ -316,3 +318,5 @@ The total absolute error at the roots is
 ```{r}
 rowSums(abs(eval_polys(ps,rs)))
 ```
+
+

@@ -57,7 +57,7 @@ print.pterm <- function(x, ...) {
 ##' @param expt1 vector of variable exponents
 ##' @param expt2 vector of variable exponents
 ##' @param order a term order function
-##' @seealso [makeActiveBinding()]
+##' @seealso [reorder_vars()]
 ##' @return The term order functions return
 ##'   * -1 if `expt1 < expt2`
 ##'   * 0 if `expt1 == expt2`
