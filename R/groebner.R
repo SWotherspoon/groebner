@@ -825,13 +825,15 @@ monomial_basis <- function(gb) {
         ## Multiply a previous candidate by the i-th variable
         mt <- prv[[j]]
         mt[i] <- mt[i]+1L
-        ## Include the monomial if it is not reducible
-        if(!any(vapply(lts,function(lt) all(lt<=mt),logical(1))))
-          nxt[[l <- l+1L]] <- mt
+        ## Check if the monomial is already a candidate
+        if(any(vapply(nxt,function(m) identical(m,mt),logical(1)))) next
+        ## Check if the monomial is reducible
+        if(any(vapply(lts,function(lt) all(lt<=mt),logical(1)))) next
+        nxt[[l <- l+1L]] <- mt
       }
     }
     ## Add the previous candidates to the basis and update
-    mts <- unique(c(mts,prv))
+    mts <- c(mts,prv)
     prv <- nxt[seq_len(l)]
   }
   mts
