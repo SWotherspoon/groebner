@@ -22,11 +22,12 @@ as.character.pterm <- function(x,...) {
   keep <- which(x$expt != 0L)
   if(length(keep)) {
     tm <- paste0("x",keep,ifelse(x$expt[keep]!=1L,paste0("^",x$expt[keep]),""),collapse="*")
-    if(x$coef!=1) paste0(x$coef,"*",tm) else tm
+    if(abs(x$coef) != 1) paste0(x$coef,tm) else (if(x$coef < 0) paste0("-",tm) else tm)
   } else {
     as.character(x$coef)
   }
 }
+
 
 # Print method for pterm
 ##' @export
