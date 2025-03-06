@@ -55,5 +55,5 @@ an inconsistent state, and it is necessary to reapply \code{\link[=poly]{poly()}
 recover a valid polynomial.
 }
 \seealso{
-\code{\link[=makeActiveBinding]{makeActiveBinding()}}
+\code{\link[=reorder_vars]{reorder_vars()}}
 }
