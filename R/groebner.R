@@ -897,12 +897,16 @@ monomial_basis0 <- function(rexpts) {
 ##'
 ##' @title Multiplication matrix
 ##' @param v a variable index
-##' @param ms a list of integer vectors representing the monomial
-##'   basis
+##' @param ms a list of the exponent vectors of the monomial basis
 ##' @param gb a Groebner basis
 ##' @return the multiplication matrix
 ##' @export
 multiplication_matrix <- function(v,ms,gb) {
+
+  as.nc<- function(x) {
+    if(is.numeric(x) || is.complex(x)) x else as.numeric(x)
+  }
+
   n <- length(ms)
   M <- matrix(0L,n,n)
   for(j in seq_len(n)) {
@@ -912,7 +916,7 @@ multiplication_matrix <- function(v,ms,gb) {
     p <- reduce_ps(p,gb)
     if(length(p)>0L) {
       is <- match(lapply(p,function(tm) tm$expt),ms)
-      cs <- sapply(p,function(tm) as.numeric(tm$coef))
+      cs <- sapply(p,function(tm) as.nc(tm$coef))
       M[is,j] <- cs
     }
   }
@@ -926,8 +930,7 @@ multiplication_matrix <- function(v,ms,gb) {
 ##'
 ##' @title Derivative matrix
 ##' @param v a variable index
-##' @param ms a list of integer vectors representing the monomial
-##'   basis
+##' @param ms a list of the exponent vectors of the monomial basis
 ##' @return the derivative matrix
 ##' @export
 derivative_matrix <- function(v,ms) {

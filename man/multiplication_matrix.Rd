@@ -9,8 +9,7 @@ multiplication_matrix(v, ms, gb)
 \arguments{
 \item{v}{a variable index}
 
-\item{ms}{a list of integer vectors representing the monomial
-basis}
+\item{ms}{a list of the exponent vectors of the monomial basis}
 
 \item{gb}{a Groebner basis}
 }

@@ -9,8 +9,7 @@ derivative_matrix(v, ms)
 \arguments{
 \item{v}{a variable index}
 
-\item{ms}{a list of integer vectors representing the monomial
-basis}
+\item{ms}{a list of the exponent vectors of the monomial basis}
 }
 \value{
 the derivative matrix
