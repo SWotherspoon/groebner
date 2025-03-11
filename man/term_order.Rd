@@ -19,9 +19,9 @@ set_term_order(order = grevlex)
 get_term_order(order = grevlex)
 }
 \arguments{
-\item{expt1}{vector of variable exponents}
+\item{expt1}{integer vector of variable exponents}
 
-\item{expt2}{vector of variable exponents}
+\item{expt2}{integer vector of variable exponents}
 
 \item{order}{a term order function}
 }

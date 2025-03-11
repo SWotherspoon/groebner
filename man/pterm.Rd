@@ -9,7 +9,7 @@ pterm(coef, expt)
 \arguments{
 \item{coef}{the coefficient of the term}
 
-\item{expt}{vector of variable exponents}
+\item{expt}{integer vector of variable exponents}
 }
 \value{
 a pterm object
@@ -18,8 +18,9 @@ a pterm object
 Create  monomial term
 }
 \details{
-A monomial term is represented as a coefficient and a vector of
-variable exponents. This function is used in conjuction with
+A monomial term is represented as a coefficient and an integer
+vector of the exponents of the standard variables \verb{x1,x2,...} in
+the monomial term. This function is used in conjuction with
 \code{\link[=poly]{poly()}} to create a polynomial.
 }
 \seealso{

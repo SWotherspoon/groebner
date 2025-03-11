@@ -1,12 +1,13 @@
 ##' Create  monomial term
 ##'
-##' A monomial term is represented as a coefficient and a vector of
-##' variable exponents. This function is used in conjuction with
+##' A monomial term is represented as a coefficient and an integer
+##' vector of the exponents of the standard variables `x1,x2,...` in
+##' the monomial term. This function is used in conjuction with
 ##' [poly()] to create a polynomial.
 ##'
 ##' @title Create a monomial
 ##' @param coef the coefficient of the term
-##' @param expt vector of variable exponents
+##' @param expt integer vector of variable exponents
 ##' @seealso [poly()]
 ##' @return a pterm object
 ##' @export
@@ -55,8 +56,8 @@ print.pterm <- function(x, ...) {
 ##' recover a valid polynomial.
 ##'
 ##' @title Term Orders
-##' @param expt1 vector of variable exponents
-##' @param expt2 vector of variable exponents
+##' @param expt1 integer vector of variable exponents
+##' @param expt2 integer vector of variable exponents
 ##' @param order a term order function
 ##' @seealso [reorder_vars()]
 ##' @return The term order functions return
