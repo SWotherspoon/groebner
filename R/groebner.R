@@ -988,39 +988,19 @@ newton_polish <- function(ps,x,n) {
 
 ##' Compute an eigenbasis of a matrix.
 ##'
-##' Returns a list of matrices, where the columns of each matrix 
+##' Returns a list of matrices, where the columns of each matrix
 ##' form an orthonormal basis for an eigenspace of the matrix.
 ##'
 ##' If `tol` is too small, equal eigenvalues are erroneously identified
 ##' as distinct, and the bases for some eigenspaces are split.
-##' 
+##'
 ##' @title Eigenbasis
 ##' @param A a matrix
 ##' @param tol tolerance used to determine if two eigenvalues differ.
 ##' @return a list of matrices, one for each distinct eigenvalue, the
 ##'   columns of each are the eigenbasis for that eigenvalue
 ##' @export
-eigenbasis <- function(A,tol=1.0E-6) {
-
-  nullspace <- function(A) {
-    QR <- qr(t(A),LAPACK=TRUE)
-    rs <- abs(diag(qr.R(QR)))
-    rank <- sum(rs > 1.0E-12*max(rs))
-    if(rank==ncol(A)) return(matrix(0,nrow(A),0))
-    if(rank==0) return(diag(1,nrow(A)))
-    qr.Q(QR,complete=TRUE)[,-seq_len(rank),drop=FALSE]
-  }
-
-  ## Distinct eigenvalues
-  eig <- eigen(A,only.values=TRUE)
-  lambda <- eig$values[c(TRUE,abs(diff(eig$values))>tol)]
-
-  lapply(lambda,function(l) nullspace(A - diag(l,nrow(A))))
-}
-
-
-## Alternate implementation of eigenbasis
-eigenbasis1 <- function(A, tol=1e-6) {
+eigenbasis <- function(A, tol=1e-6) {
 
   ## Compute the independent columns of a matrix
   independent <- function(X) {
@@ -1035,7 +1015,51 @@ eigenbasis1 <- function(A, tol=1e-6) {
   eig <- eigen(A)
   sets <- cumsum(c(TRUE,abs(diff(eig$values))>tol))
 
-  lapply(unique(sets), function(set) independent(eig$vectors[, sets==set, drop = FALSE]))
+  lapply(unique(sets),
+         function(set) independent(eig$vectors[,sets==set,drop=FALSE]))
+}
+
+
+## Alternate implementation of eigenbasis based on SVD
+eigenbasis1 <- function(A,tol=1.0E-6) {
+
+  M <- max(abs(A))
+
+  nullspace <- function(A) {
+    SVD <- svd(A)
+    rank <- sum(SVD$d > 1.0E-12*M)
+    if(rank==ncol(A)) return(matrix(0,nrow(A),0))
+    if(rank==0L) return(diag(1,nrow(A)))
+    SVD$v[,seq.int(rank+1L,ncol(A)),drop=FALSE]
+  }
+
+  ## Distinct eigenvalues
+  eig <- eigen(A,only.values=TRUE)
+  lambda <- eig$values[c(TRUE,abs(diff(eig$values))>tol)]
+
+  lapply(lambda,function(l) nullspace(A - diag(l,nrow(A))))
+}
+
+
+## Alternate implementation of eigenbasis based on QR
+eigenbasis2 <- function(A,tol=1.0E-6) {
+
+  M <- max(abs(A))
+
+  nullspace <- function(A) {
+    QR <- qr(t(A),LAPACK=TRUE)
+    rs <- abs(diag(qr.R(QR)))
+    rank <- sum(rs > 1.0E-12*M)
+    if(rank==ncol(A)) return(matrix(0,nrow(A),0))
+    if(rank==0L) return(diag(1,nrow(A)))
+    qr.Q(QR,complete=TRUE)[,-seq_len(rank),drop=FALSE]
+  }
+
+  ## Distinct eigenvalues
+  eig <- eigen(A,only.values=TRUE)
+  lambda <- eig$values[c(TRUE,abs(diff(eig$values))>tol)]
+
+  lapply(lambda,function(l) nullspace(A - diag(l,nrow(A))))
 }
 
 
