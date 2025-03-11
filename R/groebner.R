@@ -351,24 +351,30 @@ sort_terms1 <- function(terms) {
 }
 
 
-##' Evaluate a polynomial or a list of polynomials at a point.
+##' Numerically evaluate a polynomial or a list of polynomials at an 
+##' array of points.
+##'
+##' The function `neval_poly` evaluates a single polynomial at an array
+##' of evaluation points returning the result as a numeric or complex 
+##' vector.  The function `neval_polys` evaluates a list of polynomials
+##' at an array of evaluation points returning the result as a numeric 
+##' or complex matrix.
 ##'
 ##' @title Evaluate polynomial
 ##' @param p a polynomial
 ##' @param ps a list of polynomials
 ##' @param x a vector or matrix of evaluation points
 ##' @return the value of the polynomial at each x as complex or double.
-##' @importFrom gmp is.bigq
 ##' @export
-eval_poly <- function(p,x) {
+neval_poly <- function(p,x) {
 
-  ## Coerce rational coeffs to numeric
+  ## Coerce coeffs to numeric or complex
   coef <- function(tm) {
-    if(is.bigq(tm$coef)) as.numeric(tm$coef) else tm$coef
+    if(is.complex(tm$coef)) tm$coef else as.numeric(tm$coef)
   }
 
   if(!is.matrix(x)) x <- matrix(x,1L,length(x))
-  if(is.complex(x)|| any(vapply(p,function(tm) is.complex(tm$coef),logical(1))))
+  if(is.complex(x) || any(vapply(p,function(tm) is.complex(tm$coef),logical(1))))
     y <- complex(nrow(x))
   else
     y <- numeric(nrow(x))
@@ -380,10 +386,10 @@ eval_poly <- function(p,x) {
 }
 
 
-##' @rdname eval_poly
+##' @rdname neval_poly
 ##' @export
-eval_polys <- function(ps,x) {
-  do.call(cbind,lapply(ps,eval_poly,x=x))
+neval_polys <- function(ps,x) {
+  do.call(cbind,lapply(ps,neval_poly,x=x))
 }
 
 
@@ -923,8 +929,8 @@ newton_polish <- function(ps,x,n) {
     z <- x[k,]
     ## Newton iterations
     for(i in seq_len(n)) {
-      y <- drop(eval_polys(ps,z))
-      J <- do.call(cbind,lapply(dp,function(dp) t(eval_polys(dp,z))))
+      y <- drop(neval_polys(ps,z))
+      J <- do.call(cbind,lapply(dp,function(dp) t(neval_polys(dp,z))))
       z <- z - qr.solve(J,y)
     }
     x[k,] <- z
