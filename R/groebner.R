@@ -485,25 +485,25 @@ reorder_vars <- function(p,order) {
 ##' Polynomial arithmetic
 ##'
 ##' `poly_add` computes p1+p2, `poly_sub` computes p1-p2, `poly_mul`
-##' computes p1*p2, and `poly_scale` computes a*p where a is a scalar.
+##' computes p1*p2, and `poly_scale` computes a*p where a is a term.
 ##' @title Polynomial arithmetic
-##' @param p1 a polynomial
-##' @param p2 a polynomial
-##' @param a a scalar
+##' @param p1,p2 polynomials
+##' @param acoef the coefficient of a
+##' @param aexpt the exponent of a
 ##' @return a polynomial
-##' @rdname poly_arithetic
+##' @rdname poly_arithmetic
 ##' @export
 poly_add <- function(p1,p2) {
   poly_axpy(1L,0L,p1,p2)
 }
 
-##' @rdname poly_arithetic
+##' @rdname poly_arithmetic
 ##' @export
 poly_sub <- function(p1,p2) {
   poly_axpy(-1L,0L,p2,p1)
 }
 
-##' @rdname poly_arithetic
+##' @rdname poly_arithmetic
 ##' @export
 poly_mul <- function(p1,p2) {
   r <- list()
@@ -511,19 +511,19 @@ poly_mul <- function(p1,p2) {
     for(tm in p1) r <- poly_axpy(tm$coef,tm$expt,p2,r)
   else
     for(tm in p2) r <- poly_axpy(tm$coef,tm$expt,p1,r)
-  class(r) <- "poly"
-  r
+  .poly(r)
 }
 
-##' @rdname poly_arithetic
+##' @rdname poly_arithmetic
 ##' @export
-poly_scale <- function(a,p1) {
-  if(a==0)
-    p1 <- list()
-  else
-    for(k in seq_along(p1)) p1[[k]]$coef <- p1[[k]]$coef*a
-  class(p1) <- "poly"
-  p1
+poly_scale <- function(acoef=1L,aexpt=0L,p1) {
+  if(acoef==0) return(.poly(list()))
+
+  for(k in seq_along(p1)) {
+    p1[[k]]$coef <- p1[[k]]$coef*acoef
+    p1[[k]]$expt <- p1[[k]]$expt+aexpt
+  }
+  .poly(p1)
 }
 
 

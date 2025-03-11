@@ -13,14 +13,14 @@ poly_sub(p1, p2)
 
 poly_mul(p1, p2)
 
-poly_scale(a, p1)
+poly_scale(acoef = 1L, aexpt = 0L, p1)
 }
 \arguments{
-\item{p1}{a polynomial}
+\item{p1, p2}{polynomials}
 
-\item{p2}{a polynomial}
+\item{acoef}{the coefficient of a}
 
-\item{a}{a scalar}
+\item{aexpt}{the exponent of a}
 }
 \value{
 a polynomial
@@ -30,5 +30,5 @@ Polynomial arithmetic
 }
 \details{
 \code{poly_add} computes p1+p2, \code{poly_sub} computes p1-p2, \code{poly_mul}
-computes p1\emph{p2, and \code{poly_scale} computes a}p where a is a scalar.
+computes p1\emph{p2, and \code{poly_scale} computes a}p where a is a term.
 }
