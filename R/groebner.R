@@ -801,25 +801,68 @@ groebner <- function(ps) {
 }
 
 
-##' Compute a monomial basis.
+##' Generate a set of monomials upto a given degree.
 ##'
-##' Given a groebner basis, compute the corresponding monomial basis.
-##' The monomial basis is returned as a list of integer vectors each
-##' representing the powers of the standard variables `x1,x2,...` in
-##' the monomial term.
+##' @title Monomial set
+##' @param nvar the number of variables
+##' @param deg the degree of the monomials
+##' @return a list of integer vectors representing the monomial set
+##' @export
+monomial_set <- function(nvar,deg) {
+
+  ## The monomials
+  expts <- list()
+
+  ## The candidate set of monomials
+  prv <- list(integer(nvar))
+  expts <- prv
+  for(k in seq_len(deg)) {
+    nxt <- vector("list",nvar*length(prv))
+    l <- 0L
+    for(i in seq_len(nvar)) {
+      for(j in seq_along(prv)) {
+        ## Multiply a previous candidate by the i-th variable
+        expt <- prv[[j]]
+        expt[i] <- expt[i]+1L
+        nxt[[l <- l+1L]] <- expt
+      }
+    }
+    ## Add the candidates to the set
+    prv <- unique(nxt[seq_len(l)])
+    expts <- c(expts,prv)
+  }
+  expts
+}
+
+##' Compute a monomial basis from a Groebner basis or a list of
+##' reducible monomials.
+##'
+##' Given a Groebner basis or a list of reducible monomials terms
+##' compute the corresponding monomial basis. The monomial basis is
+##' returned as a list of integer vectors of the exponents of the
+##' of the standard variables `x1,x2,...` in the monomial term. The
+##' `monomial_basis0` function computes a monomial basis given a list
+##' of reducible terms, and `monomial_basis` computes a monomial 
+##' basis from a Groebner basis.
 ##'
 ##' @title Monomial basis
 ##' @param gb a Groebner basis
-##' @return a list of integer vectors representing the monomial basis
+##' @param rexpts a list of reducible exponent vectors
+##' @return a list of the exponent vectors in the monomial basis
 ##' @export
 monomial_basis <- function(gb) {
+  monomial_basis0(lapply(gb,function(p) p[[1L]]$expt))
+}
 
-  ## Lead terms in the basis
-  lts <- lapply(gb,function(p) p[[1L]]$expt)
-  nvar <- length(lts[[1L]])
 
-  ## The monomial basis
-  mts <- list()
+##' @rdname monomial_basis
+##' @export
+monomial_basis0 <- function(rexpts) {
+
+  nvar <- length(rexpts[[1L]])
+
+  ## The exponent vectors in the monomial basis
+  expts <- list()
 
   ## The candidate set of monomials
   prv <- list(integer(nvar))
@@ -829,20 +872,21 @@ monomial_basis <- function(gb) {
     for(i in seq_len(nvar)) {
       for(j in seq_along(prv)) {
         ## Multiply a previous candidate by the i-th variable
-        mt <- prv[[j]]
-        mt[i] <- mt[i]+1L
-        ## Check if the monomial is already a candidate
-        if(any(vapply(nxt,function(m) identical(m,mt),logical(1)))) next
+        expt <- prv[[j]]
+        expt[i] <- expt[i]+1L
         ## Check if the monomial is reducible
-        if(any(vapply(lts,function(lt) all(lt<=mt),logical(1)))) next
-        nxt[[l <- l+1L]] <- mt
+        keep <- TRUE
+        for(rexpt in rexpts)
+          if(all(rexpt<=expt)) { keep <- FALSE; break }
+        if(!keep) next
+        nxt[[l <- l+1L]] <- expt
       }
     }
     ## Add the previous candidates to the basis and update
-    mts <- c(mts,prv)
-    prv <- nxt[seq_len(l)]
+    expts <- c(expts,prv)
+    prv <- unique(nxt[seq_len(l)])
   }
-  mts
+  expts
 }
 
 

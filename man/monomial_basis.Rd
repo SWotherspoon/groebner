@@ -2,22 +2,31 @@
 % Please edit documentation in R/groebner.R
 \name{monomial_basis}
 \alias{monomial_basis}
+\alias{monomial_basis0}
 \title{Monomial basis}
 \usage{
 monomial_basis(gb)
+
+monomial_basis0(rexpts)
 }
 \arguments{
 \item{gb}{a Groebner basis}
+
+\item{rexpts}{a list of reducible exponent vectors}
 }
 \value{
-a list of integer vectors representing the monomial basis
+a list of the exponent vectors in the monomial basis
 }
 \description{
-Compute a monomial basis.
+Compute a monomial basis from a Groebner basis or a list of
+reducible monomials.
 }
 \details{
-Given a groebner basis, compute the corresponding monomial basis.
-The monomial basis is returned as a list of integer vectors each
-representing the powers of the standard variables \verb{x1,x2,...} in
-the monomial term.
+Given a Groebner basis or a list of reducible monomials terms
+compute the corresponding monomial basis. The monomial basis is
+returned as a list of integer vectors of the exponents of the
+of the standard variables \verb{x1,x2,...} in the monomial term. The
+\code{monomial_basis0} function computes a monomial basis given a list
+of reducible terms, and \code{monomial_basis} computes a monomial
+basis from a Groebner basis.
 }
