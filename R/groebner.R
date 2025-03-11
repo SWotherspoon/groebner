@@ -175,6 +175,17 @@ print.poly <- function(x, ...) {
 }
 
 
+##' Compute the degree of a polynomial.
+##'
+##' @title Degree of a polynomial
+##' @param p a polynomial
+##' @return the degree of the polynomial
+##' @export
+poly_degree <- function(p) {
+  max(0L,vapply(p,function(tm) sum(tm$expt),integer(1)))
+}
+
+
 ##' Parse a string representation of a signed polynomial term.
 ##'
 ##' Parses a signed polynomial term, returning the term and the
@@ -946,6 +957,130 @@ derivative_matrix <- function(v,ms) {
   }
   M
 }
+
+##' Compute the Macaulay matrix for a polynomial system.
+##'
+##' @title Macaulay matrix
+##' @param ps a list of polynomials
+##' @param tdeg the degree of the Macaulay matrix
+##' @return a list with elements
+##'   * `M`: the Macaulay matrix
+##'   * `ms`: the monomial basis
+##' @export
+macaulay_matrix <- function(ps,tdeg=sum(degs-1L)+1L) {
+
+  as.nc<- function(x) {
+    if(is.numeric(x) || is.complex(x)) x else as.numeric(x)
+  }
+
+  degs <- vapply(ps,poly_degree,0L)
+  nvar <- length(ps[[1L]][[1L]]$expt)
+  ms <- rev(monomial_set(nvar,tdeg))
+
+  ## Scale the polynomials by the monomials
+  ps <- unlist(lapply(seq_along(ps),function(k)
+    lapply(monomial_set(nvar,tdeg-degs[k]),
+           function(m) poly_scale(1L,m,ps[[k]]))),
+    recursive=FALSE)
+
+  ## Create the Macaulay matrix
+  M <- matrix(0,length(ps),length(ms))
+  for(i in seq_along(ps)) {
+    p <- ps[[i]]
+    js <- match(lapply(p,function(tm) tm$expt),ms)
+    cs <- sapply(p,function(tm) as.nc(tm$coef))
+    M[i,js] <- cs
+  }
+  list(M=M,ms=ms)
+}
+
+
+##' reduce a matrix to reduced row echelon form by Gauss-Jordan
+##' elimination.
+##'
+##' @title Gauss-Jordan elimination
+##' @param A a matrix
+##' @return a list with elements
+##'   * `A`: the reduced matrix
+##'   * `reduced`: the indices of the reduced columns
+##'   * `rank`: the rank of the matrix
+##' @export
+gauss_jordan <- function(A) {
+
+  ## Rescale rows
+  A <- A/apply(abs(A),1L,max)
+
+  reduced <- integer(nrow(A))
+  rank <- 0L
+  j <- 1L
+  ## Loop over rows to reduce
+  for(i in seq_len(nrow(A))) {
+    ## Find a pivot element
+    while(j <= ncol(A) && all((as <- abs(A[seq.int(i,nrow(A)),j]))<1.0E-12)) j <- j+1L
+    if(j > ncol(A)) break
+    piv <- which.max(as) + i - 1L
+    ## Swap rows if necessary and normalize
+    if(piv != i) A[c(i,piv),] <- A[c(piv,i),]
+    A[i,] <- A[i,]/A[i,j]
+    ## Reduce the remaining rows
+    A[-i,] <- A[-i,] - outer(A[-i,j],A[i,])
+    #for(k in seq_len(nrow(A))[-i])
+      #if(A[k,j] != 0) A[k,] <- A[k,]-A[k,j]*A[i,]
+    rank <- rank+1L
+    reduced[i] <- j
+    j <- j+1L
+    if(j > ncol(A)) break
+  }
+  if(rank < length(reduced)) reduced <- reduced[seq_len(rank)]
+  list(A=A,reduced=reduced,rank=rank)
+}
+
+
+##' Compute a monomial basis determined from the dependencies of a
+##' Macaulay matrix.
+##'
+##' Computes a monomial basis from the linear dependences of the
+##' Macaulay matrix of a polynomial system.  Returns a monomial basis
+##' and a reduction matrix that can be used to reduce terms to the
+##' monomial basis.
+##'
+##' @title Macaulay monomial basis
+##' @param ps a list of polynomials
+##' @return a list with elements
+##'   * `A`: reduction matrix
+##'   * `term`: reducible terms
+##'   * `basis`: the monomial basis
+##' @export
+macaulay_monomial_basis <- function(ps) {
+  mc <- macaulay_matrix(ps)
+  gj <- gauss_jordan(mc$M)
+  bs <- monomial_basis0(mc$ms[gj$reduced])
+  bidx <- match(bs,mc$ms)
+  ## Drop terms that reduce to terms not in the basis
+  keep <- which(rowSums(abs(gj$A[seq_len(gj$rank),-c(gj$reduced,bidx),drop=FALSE]))==0)
+  list(A=rbind(-gj$A[keep,bidx,drop=FALSE],diag(1,length(bs))),
+       term=mc$ms[c(gj$reduced[keep],bidx)],
+       basis=bs)
+}
+
+##' Compute the multiplication matrix for a variable from a Macaulay
+##' monomial basis.
+##'
+##' @title Multiplication matrix from a Macaulay monomial basis
+##' @param v a variable index
+##' @param mb an object returned by [macaulay_monomial_basis()]
+##' @return the multiplication matrix
+##' @export
+macaulay_multiplication_matrix <- function(v,mb) {
+
+  ms <- mb$basis
+  for(k in seq_along(ms)) ms[[k]][v] <- ms[[k]][v]+1L
+  is <- match(ms,mb$term)
+  if(any(is.na(is))) stop("Irreducible terms found")
+  t(mb$A[is,])
+}
+
+
 
 
 ##' Polish a root of a polynomial system using Newton's method.
