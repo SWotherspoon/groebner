@@ -93,13 +93,13 @@ rs
 
 The total absolute error at the roots is
 ```{r}
-rowSums(abs(eval_polys(ps,rs)))
+rowSums(abs(neval_polys(ps,rs)))
 ```
 
 The roots can be refined by Newton iteration
 ```{r}
 rs <- newton_polish(ps,rs,3)
-rowSums(abs(eval_polys(ps,rs)))
+rowSums(abs(neval_polys(ps,rs)))
 ```
 
 Alternately, if a common left eigenbasis is calculated from the multiplication matrices
@@ -183,7 +183,7 @@ rs
 
 and the total absolute error at the roots is
 ```{r}
-rowSums(abs(eval_polys(ps,rs)))
+rowSums(abs(neval_polys(ps,rs)))
 ```
 
 
@@ -233,7 +233,7 @@ rs
 
 The total absolute error at the root is
 ```{r}
-rowSums(abs(eval_polys(ps,rs)))
+rowSums(abs(neval_polys(ps,rs)))
 ```
 
 
@@ -275,7 +275,7 @@ rs
 
 The total absolute error at the roots is
 ```{r}
-rowSums(abs(eval_polys(ps,rs)))
+rowSums(abs(neval_polys(ps,rs)))
 ```
 
 
@@ -316,7 +316,7 @@ rs
 
 The total absolute error at the roots is
 ```{r}
-rowSums(abs(eval_polys(ps,rs)))
+rowSums(abs(neval_polys(ps,rs)))
 ```
 
 

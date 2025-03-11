@@ -489,7 +489,7 @@ reorder_vars <- function(p,order) {
     if(length(expt) < l) expt <- c(expt,integer(l-length(expt)))
     expt[order]
   }
-  
+
   poly(lapply(p,function(tm) pterm(tm$coef,reorder(tm$expt))))
 }
 
@@ -1334,4 +1334,27 @@ solve_polys <- function(ps,gb=groebner(ps),newton=0,tol=1.0E-6) {
   if(newton>0) rs <- newton_polish(ps,rs,newton)
   rs
 }
+
+
+##' Test if a polynomial is univariate.
+##'
+##' @title polynomial is univariate
+##' @param p a polynomial
+##' @return The index of the variable if p is univariate, 0 otherwise
+##' @export
+is_univariate <- function(p) {
+  expt <- 0
+  for(tm in p) expt <- expt + tm$expt
+  if(sum(expt)==1L) which(expt==1L) else 0
+}
+
+as_univariate <- function(p,v) {
+  if(length(p)==0L) return(0L)
+  ord <- 0
+  for(tm in p) ord <- max(ord,tm$expt[v])
+  cfs <- rep(0L*p[[1]]$coef,ord)
+  for(tm in p) cfs[tm$expt[v]] <- tm$coef
+  cfs
+}
+
 
