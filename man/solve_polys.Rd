@@ -32,5 +32,6 @@ common eigenbasis of the multiplication matrices.
 Groebner basis and should only be used with polynomials with exact
 (integer or rational) coefficients. \code{nsolve_polys} generates
 multiplication matrices from the dependencies of the Macaulay
-matrix and should be used with polynomials with inexact coefficients.
+matrix and should be used with polynomials with inexact
+coefficients.
 }

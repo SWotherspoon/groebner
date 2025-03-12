@@ -374,14 +374,14 @@ sort_terms1 <- function(terms) {
 }
 
 
-##' Numerically evaluate a polynomial or a list of polynomials at an 
+##' Numerically evaluate a polynomial or a list of polynomials at an
 ##' array of points.
 ##'
-##' The function `neval_poly` evaluates a single polynomial at an array
-##' of evaluation points returning the result as a numeric or complex 
-##' vector.  The function `neval_polys` evaluates a list of polynomials
-##' at an array of evaluation points returning the result as a numeric 
-##' or complex matrix.
+##' The function `neval_poly` evaluates a single polynomial at an
+##' array of evaluation points returning the result as a numeric or
+##' complex vector.  The function `neval_polys` evaluates a list of
+##' polynomials at an array of evaluation points returning the result
+##' as a numeric or complex matrix.
 ##'
 ##' @title Evaluate polynomial
 ##' @param p a polynomial
@@ -479,13 +479,13 @@ poly_axpy <- function(acoef=1L,aexpt=0L,px,py) {
 ##' Change the variable order of a polynomial
 ##'
 ##' Permute the variables in a polynomial according to a permutation
-##' vector `order`.  For example, if `order` is `c(3,2,1)`,then the 
-##' standard variables `x1` and `x3` are interchanged and the terms 
+##' vector `order`.  For example, if `order` is `c(3,2,1)`,then the
+##' standard variables `x1` and `x3` are interchanged and the terms
 ##' are reordered according to the term order.
 ##'
-##' If `order` specifies more or fewer variables than are present in the
-##' current variable set, the exponent vectors are resized to encode the
-##' new variable set.
+##' If `order` specifies more or fewer variables than are present in
+##' the current variable set, the exponent vectors are resized to
+##' encode the new variable set.
 ##'
 ##' @title Reorder variables
 ##' @param p a polynomial
@@ -509,6 +509,7 @@ reorder_vars <- function(p,order) {
 ##'
 ##' `poly_add` computes p1+p2, `poly_sub` computes p1-p2, `poly_mul`
 ##' computes p1*p2, and `poly_scale` computes a*p where a is a term.
+##'
 ##' @title Polynomial arithmetic
 ##' @param p1,p2 polynomials
 ##' @param acoef the coefficient of a
@@ -862,11 +863,11 @@ monomial_set <- function(nvar,deg) {
 ##'
 ##' Given a Groebner basis or a list of reducible monomials terms
 ##' compute the corresponding monomial basis. The monomial basis is
-##' returned as a list of integer vectors of the exponents of the
-##' of the standard variables `x1,x2,...` in the monomial term. The
+##' returned as a list of integer vectors of the exponents of the of
+##' the standard variables `x1,x2,...` in the monomial term. The
 ##' `monomial_basis0` function computes a monomial basis given a list
-##' of reducible terms, and `monomial_basis` computes a monomial 
-##' basis from a Groebner basis.
+##' of reducible terms, and `monomial_basis` computes a monomial basis
+##' from a Groebner basis.
 ##'
 ##' @title Monomial basis
 ##' @param gb a Groebner basis
@@ -1220,7 +1221,7 @@ eigenbasis2 <- function(A,tol=1.0E-6) {
 ##' `common_eigenbasis0` computes a common eigenbasis by computing the
 ##' eigenbasis of a random linear combination of the matrices.
 ##'
-##'  No check is performed to ensure the matrices are commute.
+##' No check is performed to ensure the matrices are commute.
 ##'
 ##' If `tol` is too small, equal eigenvalues are erroneously identified
 ##' as distinct, and the bases for some eigenspaces are split.
@@ -1298,9 +1299,9 @@ roots <- function(Ms,Bs,unique=TRUE) {
 ##' of the multiplication matrices.
 ##'
 ##' If `Bs` is a common left eigenbasis calculated from the transposed
-##' multiplication matrices, then this function will extract the values
-##' of the standard variables that appear in the monomials in the basis
-##' `ms` at the roots of the polynomial system.
+##' multiplication matrices, then this function will extract the
+##' values of the standard variables that appear in the monomials in
+##' the basis `ms` at the roots of the polynomial system.
 ##'
 ##' @title Roots from eigenvectors
 ##' @param ms a monomial basis
@@ -1328,14 +1329,15 @@ roots_left_eigenbasis <- function(ms,Bs) {
 
 ##' Find the roots of a polynomial system
 ##'
-##' These functions find the roots of a polynomial system from the 
+##' These functions find the roots of a polynomial system from the
 ##' common eigenbasis of the multiplication matrices.
 ##'
 ##' `solve_polys` generates multiplication matrices by constructing a
 ##' Groebner basis and should only be used with polynomials with exact
 ##' (integer or rational) coefficients. `nsolve_polys` generates
 ##' multiplication matrices from the dependencies of the Macaulay
-##' matrix and should be used with polynomials with inexact coefficients.
+##' matrix and should be used with polynomials with inexact
+##' coefficients.
 ##'
 ##' @title Roots of a polynomial system
 ##' @param ps a list of polynomials

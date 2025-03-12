@@ -24,9 +24,9 @@ Numerically evaluate a polynomial or a list of polynomials at an
 array of points.
 }
 \details{
-The function \code{neval_poly} evaluates a single polynomial at an array
-of evaluation points returning the result as a numeric or complex
-vector.  The function \code{neval_polys} evaluates a list of polynomials
-at an array of evaluation points returning the result as a numeric
-or complex matrix.
+The function \code{neval_poly} evaluates a single polynomial at an
+array of evaluation points returning the result as a numeric or
+complex vector.  The function \code{neval_polys} evaluates a list of
+polynomials at an array of evaluation points returning the result
+as a numeric or complex matrix.
 }

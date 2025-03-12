@@ -1,3 +1,8 @@
+# groebner 0.3.0
+
+* Added `nsolve_polys` for solving with inexact arithmetic by exploiting the dependencies in the
+  Macaulay matrix.
+
 # groebner 0.2.0
 
 * Facilities for basic polynomial arithmetic

@@ -24,9 +24,9 @@ reducible monomials.
 \details{
 Given a Groebner basis or a list of reducible monomials terms
 compute the corresponding monomial basis. The monomial basis is
-returned as a list of integer vectors of the exponents of the
-of the standard variables \verb{x1,x2,...} in the monomial term. The
+returned as a list of integer vectors of the exponents of the of
+the standard variables \verb{x1,x2,...} in the monomial term. The
 \code{monomial_basis0} function computes a monomial basis given a list
-of reducible terms, and \code{monomial_basis} computes a monomial
-basis from a Groebner basis.
+of reducible terms, and \code{monomial_basis} computes a monomial basis
+from a Groebner basis.
 }

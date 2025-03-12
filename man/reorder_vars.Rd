@@ -23,7 +23,7 @@ vector \code{order}.  For example, if \code{order} is \code{c(3,2,1)},then the
 standard variables \code{x1} and \code{x3} are interchanged and the terms
 are reordered according to the term order.
 
-If \code{order} specifies more or fewer variables than are present in the
-current variable set, the exponent vectors are resized to encode the
-new variable set.
+If \code{order} specifies more or fewer variables than are present in
+the current variable set, the exponent vectors are resized to
+encode the new variable set.
 }

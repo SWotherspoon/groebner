@@ -20,7 +20,7 @@ of the multiplication matrices.
 }
 \details{
 If \code{Bs} is a common left eigenbasis calculated from the transposed
-multiplication matrices, then this function will extract the values
-of the standard variables that appear in the monomials in the basis
-\code{ms} at the roots of the polynomial system.
+multiplication matrices, then this function will extract the
+values of the standard variables that appear in the monomials in
+the basis \code{ms} at the roots of the polynomial system.
 }
