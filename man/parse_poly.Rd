@@ -24,7 +24,7 @@ Parse string representations of polynomials
 The \code{parse_poly} function converts a string representation of a
 polynomial in the variables \code{vars} into a \code{poly} object. The
 \code{parse_polys} function converts a list of strings into a list of
-\code{poly} objects.
+\code{poly} objects with rational coefficients.
 
 Note that the variables in \code{var} are translated to the standard
 variables \verb{x1,x2,x3,...}.

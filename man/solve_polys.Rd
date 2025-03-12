@@ -2,9 +2,12 @@
 % Please edit documentation in R/groebner.R
 \name{solve_polys}
 \alias{solve_polys}
+\alias{nsolve_polys}
 \title{Roots of a polynomial system}
 \usage{
 solve_polys(ps, gb = groebner(ps), newton = 0, tol = 1e-06)
+
+nsolve_polys(ps, newton = 0, tol = 1e-06)
 }
 \arguments{
 \item{ps}{a list of polynomials}
@@ -20,4 +23,14 @@ a matrix where each row is a root of the polynomial system
 }
 \description{
 Find the roots of a polynomial system
+}
+\details{
+These functions find the roots of a polynomial system from the
+common eigenbasis of the multiplication matrices.
+
+\code{solve_polys} generates multiplication matrices by constructing a
+Groebner basis and should only be used with polynomials with exact
+(integer or rational) coefficients. \code{nsolve_polys} generates
+multiplication matrices from the dependencies of the Macaulay
+matrix and should be used with polynomials with inexact coefficients.
 }

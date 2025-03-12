@@ -141,6 +141,40 @@ gb
 ```
 
 
+### Inexact Arithmetic
+
+Groebner basis algorithms are generally unstable for inexact (floating point) arithmetic.  For 
+polynomial systems with with floating point coefficients, either the coefficients should re replaced 
+with rational approximations (using `as.bigq` from the `gmp` package), or the system should be 
+solved with `nsolve_polys` which generates the required multiplication matrices from the linear
+dependencies of the Macaulay matrix.
+
+```{r}
+set_term_order(grevlex)
+ps <- parse_polys(c("x^2-4*x*y+4*y^2-4",
+                    "4*x^2-4*x*y+y^2-4"),
+                  c("x","y"))
+## Coerce coefficients to double
+ps <- lapply(ps,coerce_coef,as.type=as.double)
+ps
+```
+
+Solve system without generating a Groebner basis
+```{r}
+nsolve_polys(ps)
+```
+
+
+In this case, a monomial basis is deduced by row reduction of the Macaulay matrix.  This produces 
+a monomial basis, a set of reducible monomials and a matrix that maps reducible monomial to basis
+elements.  This is then used to construct the required multiplication matrices
+```{r}
+mb <- macaulay_monomial_basis(ps)
+lapply(1:2,function(k) macaulay_multiplication_matrix(k,mb))
+```
+
+
+
 
 ## Example 2
 

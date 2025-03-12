@@ -187,6 +187,17 @@ poly_degree <- function(p) {
 }
 
 
+##' Coerce the coefficients of a polynomial to a specific type.
+##'
+##' @title Coerce coefficients
+##' @param p a polynomial
+##' @param as.type the type coercion function
+##' @return a polynomial with coerced coefficients
+##' @export
+coerce_coef <- function(p,as.type) {
+  .poly(lapply(p,function(tm) pterm(as.type(tm$coef),tm$expt)))
+}
+
 ##' Parse a string representation of a signed polynomial term.
 ##'
 ##' Parses a signed polynomial term, returning the term and the
@@ -239,7 +250,7 @@ parse_term <- function(str,vars) {
 ##' The `parse_poly` function converts a string representation of a
 ##' polynomial in the variables `vars` into a `poly` object. The
 ##' `parse_polys` function converts a list of strings into a list of
-##' `poly` objects.
+##' `poly` objects with rational coefficients.
 ##'
 ##' Note that the variables in `var` are translated to the standard
 ##' variables `x1,x2,x3,...`.
@@ -1082,8 +1093,6 @@ macaulay_multiplication_matrix <- function(v,mb) {
 }
 
 
-
-
 ##' Polish a root of a polynomial system using Newton's method.
 ##'
 ##' Given a root of a polynomial system, this function performs `n`
@@ -1319,6 +1328,15 @@ roots_left_eigenbasis <- function(ms,Bs) {
 
 ##' Find the roots of a polynomial system
 ##'
+##' These functions find the roots of a polynomial system from the 
+##' common eigenbasis of the multiplication matrices.
+##'
+##' `solve_polys` generates multiplication matrices by constructing a
+##' Groebner basis and should only be used with polynomials with exact
+##' (integer or rational) coefficients. `nsolve_polys` generates
+##' multiplication matrices from the dependencies of the Macaulay
+##' matrix and should be used with polynomials with inexact coefficients.
+##'
 ##' @title Roots of a polynomial system
 ##' @param ps a list of polynomials
 ##' @param gb a Groebner basis
@@ -1334,6 +1352,20 @@ solve_polys <- function(ps,gb=groebner(ps),newton=0,tol=1.0E-6) {
   if(newton>0) rs <- newton_polish(ps,rs,newton)
   rs
 }
+
+##' @rdname solve_polys
+##' @export
+nsolve_polys <- function(ps,newton=0,tol=1.0E-6) {
+  mb <- macaulay_monomial_basis(ps)
+  Ms <- lapply(seq_along(mb$basis[[1]]),function(m) macaulay_multiplication_matrix(m,mb))
+  Bs <- common_eigenbasis(Ms,tol=tol)
+  rs <- roots(Ms,Bs)
+  if(newton>0) rs <- newton_polish(ps,rs,newton)
+  rs
+}
+
+
+
 
 
 ##' Test if a polynomial is univariate.
