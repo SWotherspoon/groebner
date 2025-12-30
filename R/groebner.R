@@ -595,23 +595,25 @@ derivative <- function(p,order) {
 
 ##' Reduce polynomials.
 ##'
-##' There are four functions for reducing polynomials:
+##' There are five functions for reducing polynomials:
 ##'
 ##' * `reduce_pp` reduces a polynomial by another polynomial
 ##' * `reduce_ps` reduces a polynomial by a list of polynomials
 ##' * `reduce_sp` reduces a list of polynomials by a polynomial
+##' * `reduce_ss` reduces a list of polynomials by a list of
+##'   polynomials
 ##' * `reduce_s` reduces a list of polynomials
 ##'
-##' For functions `reduce_pp` and `reduce_sp` the reductions are
-##' performed in a single pass, but for `reduce_ps` and `reduce_s` the
-##' reductions are iterated until the result cannot be further
-##' reduced.
+##' For functions `reduce_pp`, `reduce_sp`, and `reduce_ss` the
+##' reductions are performed in a single pass, but for `reduce_ps` and
+##' `reduce_s` the reductions are iterated until the result cannot be
+##' further reduced.
 ##'
 ##' @title Reduce
-##' @param p1 a polynomial
-##' @param p2 a polynomial
-##' @param p a polynomial
-##' @param ps a list of polynomials
+##' @param p1 the polynomial to reduce
+##' @param p2 the polynomial to reduce by
+##' @param ps1 a list of polynomials to reduce
+##' @param ps2 a list of polynomials to reduce by
 ##' @return the reduced polynomial
 ##' @rdname reduce
 ##' @export
@@ -686,50 +688,57 @@ reduce_pp <- function(p1,p2) {
 
 ##' @rdname reduce
 ##' @export
-reduce_ps <- function(p,ps) {
-  if(length(p)==0L) return(p)
+reduce_ps <- function(p1,ps2) {
+  if(length(p1)==0L) return(p1)
   p0 <- NULL
-  while(!identical(p,p0)) {
-    p0 <- p
-    for(q in ps) {
-      p <- reduce_pp(p,q)
-      if(length(p)==0L) return(p)
+  while(!identical(p1,p0)) {
+    p0 <- p1
+    for(p2 in ps2) {
+      p1 <- reduce_pp(p1,p2)
+      if(length(p1)==0L) return(p1)
     }
   }
-  p
+  p1
 }
 
 
 ##' @rdname reduce
 ##' @export
-reduce_sp <- function(ps,p) {
-  for(k in seq_along(ps))
-    ps[[k]] <- reduce_ps(ps[[k]],ps)
-  if(any((ls <- lengths(ps))==0L)) ps[ls>0L] else ps
+reduce_sp <- function(ps1,p2) {
+  for(k in seq_along(ps1))
+    ps1[[k]] <- reduce_pp(ps1[[k]],p2)
+  if(any((ls <- lengths(ps1))==0L)) ps1[ls>0L] else ps1
 }
-
 
 ##' @rdname reduce
 ##' @export
-reduce_s <- function(ps) {
+reduce_ss <- function(ps1,ps2) {
+  for(k in seq_along(ps1))
+    ps1[[k]] <- reduce_ps(ps1[[k]],ps2)
+  if(any((ls <- lengths(ps1))==0L)) ps1[ls>0L] else ps1
+}
+
+##' @rdname reduce
+##' @export
+reduce_s <- function(ps1) {
   ps0 <- NULL
-  while(!identical(ps,ps0)) {
-    ps0 <- ps
-    for(i in seq_along(ps)) {
-      p <- ps[[i]]
-      if(length(p)>0L) {
-        for(j in seq_along(ps)[-i]) {
-          ps[[j]] <- reduce_pp(ps[[j]],p)
+  while(!identical(ps1,ps0)) {
+    ps0 <- ps1
+    for(i in seq_along(ps1)) {
+      p2 <- ps1[[i]]
+      if(length(p2)>0L) {
+        for(j in seq_along(ps1)[-i]) {
+          ps1[[j]] <- reduce_pp(ps1[[j]],p2)
         }
       }
     }
-    if(any((ls <- lengths(ps))==0L)) ps <- ps[ls>0L]
+    if(any((ls <- lengths(ps1))==0L)) ps1 <- ps1[ls>0L]
   }
-  ps
+  ps1
 }
 
 
-##' Compute the S-polynomial of two polynomials
+##' Compute the S-polynomial of two polynomials.
 ##'
 ##' @title S-polynomial
 ##' @param p1 a polynomial
