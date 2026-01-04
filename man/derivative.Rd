@@ -7,13 +7,13 @@
 derivative(p, order)
 }
 \arguments{
-\item{p}{a polynomial}
+\item{p}{a polynomial.}
 
 \item{order}{vector of non-negative integers specifying the
-order of the derivative}
+order of the derivative.}
 }
 \value{
-the polynomial that is the derivative of \code{p}.
+The polynomial that is the derivative of \code{p}.
 }
 \description{
 Compute the derivative of a polynomial.

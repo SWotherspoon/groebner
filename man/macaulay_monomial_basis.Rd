@@ -7,14 +7,14 @@
 macaulay_monomial_basis(ps)
 }
 \arguments{
-\item{ps}{a list of polynomials}
+\item{ps}{a list of polynomials.}
 }
 \value{
-a list with elements
+a list with elements:
 \itemize{
-\item \code{A}: reduction matrix
-\item \code{term}: reducible terms
-\item \code{basis}: the monomial basis
+\item \code{A}: reduction matrix,
+\item \code{term}: reducible terms,
+\item \code{basis}: the monomial basis.
 }
 }
 \description{

@@ -10,19 +10,19 @@ solve_polys(ps, gb = groebner(ps), newton = 0, tol = 1e-06)
 nsolve_polys(ps, newton = 0, tol = 1e-06)
 }
 \arguments{
-\item{ps}{a list of polynomials}
+\item{ps}{a list of polynomials.}
 
-\item{gb}{a Groebner basis}
+\item{gb}{a Groebner basis.}
 
-\item{newton}{the number of Newton iterations used to refine roots}
+\item{newton}{the number of Newton iterations used to refine roots.}
 
 \item{tol}{tolerance used to determine if two eigenvalues differ.}
 }
 \value{
-a matrix where each row is a root of the polynomial system
+A matrix where each row is a root of the polynomial system.
 }
 \description{
-Find the roots of a polynomial system
+Find the roots of a polynomial system.
 }
 \details{
 These functions find the roots of a polynomial system from the

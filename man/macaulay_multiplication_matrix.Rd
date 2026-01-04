@@ -7,12 +7,12 @@
 macaulay_multiplication_matrix(v, mb)
 }
 \arguments{
-\item{v}{a variable index}
+\item{v}{a variable index.}
 
-\item{mb}{an object returned by \code{\link[=macaulay_monomial_basis]{macaulay_monomial_basis()}}}
+\item{mb}{an object returned by \code{\link[=macaulay_monomial_basis]{macaulay_monomial_basis()}}.}
 }
 \value{
-the multiplication matrix
+The multiplication matrix.
 }
 \description{
 Compute the multiplication matrix for a variable from a Macaulay

@@ -10,12 +10,12 @@ monomial_basis(gb)
 monomial_basis0(rexpts)
 }
 \arguments{
-\item{gb}{a Groebner basis}
+\item{gb}{a Groebner basis.}
 
-\item{rexpts}{a list of reducible exponent vectors}
+\item{rexpts}{a list of reducible exponent vectors.}
 }
 \value{
-a list of the exponent vectors in the monomial basis
+A list of the exponent vectors in the monomial basis.
 }
 \description{
 Compute a monomial basis from a Groebner basis or a list of

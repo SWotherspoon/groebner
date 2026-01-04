@@ -19,18 +19,18 @@ set_term_order(order = grevlex)
 get_term_order(order = grevlex)
 }
 \arguments{
-\item{expt1}{integer vector of variable exponents}
+\item{expt1}{integer vector of variable exponents.}
 
-\item{expt2}{integer vector of variable exponents}
+\item{expt2}{integer vector of variable exponents.}
 
-\item{order}{a term order function}
+\item{order}{a term order function.}
 }
 \value{
-The term order functions return
+The term order functions return:
 \itemize{
-\item -1 if \code{expt1 < expt2}
-\item 0 if \code{expt1 == expt2}
-\item 1 if \code{expt1 > expt2}
+\item -1 if \code{expt1 < expt2},
+\item 0 if \code{expt1 == expt2},
+\item 1 if \code{expt1 > expt2}.
 }
 }
 \description{

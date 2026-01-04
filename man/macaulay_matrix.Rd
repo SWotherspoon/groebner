@@ -7,15 +7,15 @@
 macaulay_matrix(ps, tdeg = sum(degs - 1L) + 1L)
 }
 \arguments{
-\item{ps}{a list of polynomials}
+\item{ps}{a list of polynomials.}
 
-\item{tdeg}{the degree of the Macaulay matrix}
+\item{tdeg}{the degree of the Macaulay matrix.}
 }
 \value{
-a list with elements
+A list with elements:
 \itemize{
-\item \code{M}: the Macaulay matrix
-\item \code{ms}: the monomial basis
+\item \code{M}: the Macaulay matrix,
+\item \code{ms}: the monomial basis.
 }
 }
 \description{

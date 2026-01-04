@@ -7,12 +7,12 @@
 sort_list(lst, cmp)
 }
 \arguments{
-\item{lst}{a list}
+\item{lst}{a list.}
 
-\item{cmp}{comparison function}
+\item{cmp}{comparison function.}
 }
 \value{
-the sorted list
+The sorted list.
 }
 \description{
 Sort the elements of a list.

@@ -10,15 +10,15 @@ common_eigenbasis(As, tol = 1e-06, left = FALSE)
 common_eigenbasis0(As, tol = 1e-06, left = FALSE)
 }
 \arguments{
-\item{As}{a list of commuting matrices}
+\item{As}{a list of commuting matrices.}
 
 \item{tol}{tolerance used to determine if two eigenvalues differ.}
 
-\item{left}{if \code{TRUE}, compute a common left eigenbasis}
+\item{left}{if \code{TRUE}, compute a common left eigenbasis.}
 }
 \value{
-a list of matrices, the columns of each matrix are the
-common eigenbasis for the corresponding matrix in \code{As}
+A list of matrices, the columns of each matrix are the
+common eigenbasis for the corresponding matrix in \code{As}.
 }
 \description{
 Compute a common eigenbasis for a list of commuting matrices.

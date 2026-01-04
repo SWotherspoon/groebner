@@ -7,11 +7,11 @@
 normalize(p)
 }
 \arguments{
-\item{p}{a polynomial}
+\item{p}{a polynomial.}
 }
 \value{
-the normalized polynomial
+The normalized polynomial.
 }
 \description{
-Normalize a polynomial to have leading coefficient 1
+Normalize a polynomial to have unit leading coefficient.
 }

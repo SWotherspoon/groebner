@@ -7,12 +7,12 @@
 coerce_coef(p, as.type)
 }
 \arguments{
-\item{p}{a polynomial}
+\item{p}{a polynomial.}
 
-\item{as.type}{the type coercion function}
+\item{as.type}{the type coercion function.}
 }
 \value{
-a polynomial with coerced coefficients
+A polynomial with coerced coefficients
 }
 \description{
 Coerce the coefficients of a polynomial to a specific type.

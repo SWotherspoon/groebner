@@ -10,14 +10,14 @@ neval_poly(p, x)
 neval_polys(ps, x)
 }
 \arguments{
-\item{p}{a polynomial}
+\item{p}{a polynomial.}
 
-\item{x}{a vector or matrix of evaluation points}
+\item{x}{a vector or matrix of evaluation points.}
 
-\item{ps}{a list of polynomials}
+\item{ps}{a list of polynomials.}
 }
 \value{
-the value of the polynomial at each x as complex or double.
+The value of the polynomial at each x as complex or double.
 }
 \description{
 Numerically evaluate a polynomial or a list of polynomials at an

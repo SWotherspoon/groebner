@@ -2,19 +2,19 @@
 % Please edit documentation in R/groebner.R
 \name{gauss_jordan}
 \alias{gauss_jordan}
-\title{Gauss-Jordan elimination}
+\title{Gauss-Jordan eliminationo}
 \usage{
 gauss_jordan(A)
 }
 \arguments{
-\item{A}{a matrix}
+\item{A}{a matrix.}
 }
 \value{
-a list with elements
+A list with elements:
 \itemize{
-\item \code{A}: the reduced matrix
-\item \code{reduced}: the indices of the reduced columns
-\item \code{rank}: the rank of the matrix
+\item \code{A}: the reduced matrix,
+\item \code{reduced}: the indices of the reduced columns,
+\item \code{rank}: the rank of the matrix.
 }
 }
 \description{

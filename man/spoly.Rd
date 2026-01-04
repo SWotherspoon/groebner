@@ -7,13 +7,13 @@
 spoly(p1, p2)
 }
 \arguments{
-\item{p1}{a polynomial}
+\item{p1}{a polynomial.}
 
-\item{p2}{a polynomial}
+\item{p2}{a polynomial.}
 }
 \value{
-the S-polynomial
+The S-polynomial.
 }
 \description{
-Compute the S-polynomial of two polynomials
+Compute the S-polynomial of two polynomials.
 }

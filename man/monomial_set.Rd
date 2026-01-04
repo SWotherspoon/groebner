@@ -7,12 +7,12 @@
 monomial_set(nvar, deg)
 }
 \arguments{
-\item{nvar}{the number of variables}
+\item{nvar}{the number of variables.}
 
-\item{deg}{the degree of the monomials}
+\item{deg}{the degree of the monomials.}
 }
 \value{
-a list of integer vectors representing the monomial set
+A list of integer vectors representing the monomial set.
 }
 \description{
 Generate a set of monomials upto a given degree.

@@ -7,13 +7,13 @@
 eigenbasis(A, tol = 1e-06)
 }
 \arguments{
-\item{A}{a matrix}
+\item{A}{a matrix.}
 
 \item{tol}{tolerance used to determine if two eigenvalues differ.}
 }
 \value{
-a list of matrices, one for each distinct eigenvalue, the
-columns of each are the eigenbasis for that eigenvalue
+A list of matrices, one for each distinct eigenvalue, the
+columns of each are the eigenbasis for that eigenvalue.
 }
 \description{
 Compute an eigenbasis of a matrix.

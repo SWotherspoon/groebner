@@ -7,12 +7,12 @@
 parse_term(str, vars)
 }
 \arguments{
-\item{str}{a character vector}
+\item{str}{a character vector.}
 
-\item{vars}{a character vector of variable names}
+\item{vars}{a character vector of variable names.}
 }
 \value{
-a polynomial term
+A polynomial term.
 }
 \description{
 Parse a string representation of a signed polynomial term.

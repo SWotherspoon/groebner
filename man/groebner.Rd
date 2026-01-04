@@ -7,11 +7,11 @@
 groebner(ps)
 }
 \arguments{
-\item{ps}{a list of polynomials}
+\item{ps}{a list of polynomials.}
 }
 \value{
-the Groebner basis
+The Groebner basis.
 }
 \description{
-Compute the reduced Groebner basis of a set of polynomials
+Compute the reduced Groebner basis of a set of polynomials.
 }

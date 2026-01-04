@@ -10,15 +10,15 @@ parse_poly(str, vars)
 parse_polys(str, vars)
 }
 \arguments{
-\item{str}{a character vector}
+\item{str}{a character vector.}
 
-\item{vars}{a character vector of variable names}
+\item{vars}{a character vector of variable names.}
 }
 \value{
-a polynomial object
+A polynomial object.
 }
 \description{
-Parse string representations of polynomials
+Parse string representations of polynomials.
 }
 \details{
 The \code{parse_poly} function converts a string representation of a

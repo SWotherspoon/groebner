@@ -7,9 +7,9 @@
 roots_left_eigenbasis(ms, Bs)
 }
 \arguments{
-\item{ms}{a monomial basis}
+\item{ms}{a monomial basis.}
 
-\item{Bs}{a common left eigenbasis}
+\item{Bs}{a common left eigenbasis.}
 }
 \value{
 a matrix where each row is a root of the polynomial system

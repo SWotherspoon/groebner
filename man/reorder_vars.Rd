@@ -7,15 +7,15 @@
 reorder_vars(p, order)
 }
 \arguments{
-\item{p}{a polynomial}
+\item{p}{a polynomial.}
 
-\item{order}{an integer vector defining the new variable order}
+\item{order}{an integer vector defining the new variable order.}
 }
 \value{
-a polynomial with the variables in the new order
+A polynomial with the variables in the new order.
 }
 \description{
-Change the variable order of a polynomial
+Change the variable order of a polynomial.
 }
 \details{
 Permute the variables in a polynomial according to a permutation

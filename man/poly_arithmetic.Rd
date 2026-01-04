@@ -16,17 +16,17 @@ poly_mul(p1, p2)
 poly_scale(acoef = 1L, aexpt = 0L, p1)
 }
 \arguments{
-\item{p1, p2}{polynomials}
+\item{p1, p2}{polynomials.}
 
-\item{acoef}{the coefficient of a}
+\item{acoef}{the coefficient of a.}
 
-\item{aexpt}{the exponent of a}
+\item{aexpt}{the exponent of a.}
 }
 \value{
-a polynomial
+A polynomial.
 }
 \description{
-Polynomial arithmetic
+Polynomial arithmetic.
 }
 \details{
 \code{poly_add} computes p1+p2, \code{poly_sub} computes p1-p2, \code{poly_mul}

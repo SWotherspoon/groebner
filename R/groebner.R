@@ -1,4 +1,4 @@
-##' Create  monomial term
+##' Create a monomial term.
 ##'
 ##' A monomial term is represented as a coefficient and an integer
 ##' vector of the exponents of the standard variables `x1,x2,...` in
@@ -6,10 +6,10 @@
 ##' [poly()] to create a polynomial.
 ##'
 ##' @title Create a monomial
-##' @param coef the coefficient of the term
-##' @param expt integer vector of variable exponents
+##' @param coef the coefficient of the term.
+##' @param expt integer vector of variable exponents.
 ##' @seealso [poly()]
-##' @return a pterm object
+##' @return A pterm object.
 ##' @export
 pterm <- function(coef, expt) {
   r <- list(coef=coef, expt=as.integer(expt))
@@ -23,7 +23,7 @@ as.character.pterm <- function(x,...) {
   keep <- which(x$expt != 0L)
   if(length(keep)) {
     tm <- paste0("x",keep,ifelse(x$expt[keep]!=1L,paste0("^",x$expt[keep]),""),collapse="*")
-    if(abs(x$coef) != 1) paste0(x$coef,tm) else (if(x$coef < 0) paste0("-",tm) else tm)
+    if(abs(x$coef) != 1) paste0(x$coef,"*",tm) else (if(x$coef < 0) paste0("-",tm) else tm)
   } else {
     as.character(x$coef)
   }
@@ -56,14 +56,14 @@ print.pterm <- function(x, ...) {
 ##' recover a valid polynomial.
 ##'
 ##' @title Term Orders
-##' @param expt1 integer vector of variable exponents
-##' @param expt2 integer vector of variable exponents
-##' @param order a term order function
+##' @param expt1 integer vector of variable exponents.
+##' @param expt2 integer vector of variable exponents.
+##' @param order a term order function.
 ##' @seealso [reorder_vars()]
-##' @return The term order functions return
-##'   * -1 if `expt1 < expt2`
-##'   * 0 if `expt1 == expt2`
-##'   * 1 if `expt1 > expt2`
+##' @return The term order functions return:
+##'   * -1 if `expt1 < expt2`,
+##'   * 0 if `expt1 == expt2`,
+##'   * 1 if `expt1 > expt2`.
 ##' @rdname term_order
 ##' @export
 lex <- function(expt1,expt2) {
@@ -114,7 +114,7 @@ get_term_order <- function(order = grevlex) {
 }
 
 
-##' Create a polynomial
+##' Create a polynomial.
 ##'
 ##' A polynomial is represented as a list of monomials, sorted
 ##' according to the term order, where no two terms have the same
@@ -128,8 +128,8 @@ get_term_order <- function(order = grevlex) {
 ##' the list is already in normal form and simply sets the class.
 ##
 ##' @title Polynomials
-##' @param tms a list of monomials
-##' @return a poly object
+##' @param tms a list of monomials.
+##' @return A poly object.
 ##' @seealso [pterm()] [set_term_order()]
 ##' @export
 poly <- function(tms) {
@@ -179,8 +179,8 @@ print.poly <- function(x, ...) {
 ##' Compute the degree of a polynomial.
 ##'
 ##' @title Degree of a polynomial
-##' @param p a polynomial
-##' @return the degree of the polynomial
+##' @param p a polynomial.
+##' @return The degree of the polynomial.
 ##' @export
 poly_degree <- function(p) {
   max(0L,vapply(p,function(tm) sum(tm$expt),integer(1)))
@@ -190,9 +190,9 @@ poly_degree <- function(p) {
 ##' Coerce the coefficients of a polynomial to a specific type.
 ##'
 ##' @title Coerce coefficients
-##' @param p a polynomial
-##' @param as.type the type coercion function
-##' @return a polynomial with coerced coefficients
+##' @param p a polynomial.
+##' @param as.type the type coercion function.
+##' @return A polynomial with coerced coefficients
 ##' @export
 coerce_coef <- function(p,as.type) {
   .poly(lapply(p,function(tm) pterm(as.type(tm$coef),tm$expt)))
@@ -207,9 +207,9 @@ coerce_coef <- function(p,as.type) {
 ##' variables `x1,x2,x3,...`.
 ##'
 ##' @title Parse term
-##' @param str a character vector
-##' @param vars a character vector of variable names
-##' @return a polynomial term
+##' @param str a character vector.
+##' @param vars a character vector of variable names.
+##' @return A polynomial term.
 ##' @importFrom gmp as.bigq
 ##' @export
 parse_term <- function(str,vars) {
@@ -245,7 +245,7 @@ parse_term <- function(str,vars) {
 }
 
 
-##' Parse string representations of polynomials
+##' Parse string representations of polynomials.
 ##'
 ##' The `parse_poly` function converts a string representation of a
 ##' polynomial in the variables `vars` into a `poly` object. The
@@ -256,9 +256,9 @@ parse_term <- function(str,vars) {
 ##' variables `x1,x2,x3,...`.
 ##'
 ##' @title Polynomial parser
-##' @param str a character vector
-##' @param vars a character vector of variable names
-##' @return a polynomial object
+##' @param str a character vector.
+##' @param vars a character vector of variable names.
+##' @return A polynomial object.
 ##' @examples
 ##' parse_poly("x^2*y^3-x*y*z",c("x","y","z"))
 ##' @export
@@ -293,9 +293,9 @@ parse_polys <- function(str,vars) {
 ##' * 1 if `x > y`.
 ##'
 ##' @title Sort list
-##' @param lst a list
-##' @param cmp comparison function
-##' @return the sorted list
+##' @param lst a list.
+##' @param cmp comparison function.
+##' @return The sorted list.
 ##' @export
 sort_list <- function(lst,cmp) {
   # In-place recursive quicksort
@@ -356,8 +356,8 @@ sort_list1 <- function(lst, cmp) {
 ##'
 ##'
 ##' @title Sort terms
-##' @param terms a list of monomials
-##' @return the sorted list
+##' @param terms a list of monomials.
+##' @return The sorted list.
 ##' @export
 sort_terms <- function(terms) {
   order <- term_order$order
@@ -384,10 +384,10 @@ sort_terms1 <- function(terms) {
 ##' as a numeric or complex matrix.
 ##'
 ##' @title Evaluate polynomial
-##' @param p a polynomial
-##' @param ps a list of polynomials
-##' @param x a vector or matrix of evaluation points
-##' @return the value of the polynomial at each x as complex or double.
+##' @param p a polynomial.
+##' @param ps a list of polynomials.
+##' @param x a vector or matrix of evaluation points.
+##' @return The value of the polynomial at each x as complex or double.
 ##' @export
 neval_poly <- function(p,x) {
 
@@ -420,11 +420,11 @@ neval_polys <- function(ps,x) {
 ##' monomial term.
 ##'
 ##' @title Polynomial axpy
-##' @param acoef the coefficient of a
-##' @param aexpt the exponent of a
-##' @param px a polynomial
-##' @param py a polynomial
-##' @return the polynomial a*px + py
+##' @param acoef the coefficient of a.
+##' @param aexpt the exponent of a.
+##' @param px a polynomial.
+##' @param py a polynomial.
+##' @return The polynomial a*px + py.
 ##' @export
 poly_axpy <- function(acoef=1L,aexpt=0L,px,py) {
 
@@ -476,7 +476,7 @@ poly_axpy <- function(acoef=1L,aexpt=0L,px,py) {
 }
 
 
-##' Change the variable order of a polynomial
+##' Change the variable order of a polynomial.
 ##'
 ##' Permute the variables in a polynomial according to a permutation
 ##' vector `order`.  For example, if `order` is `c(3,2,1)`,then the
@@ -488,9 +488,9 @@ poly_axpy <- function(acoef=1L,aexpt=0L,px,py) {
 ##' encode the new variable set.
 ##'
 ##' @title Reorder variables
-##' @param p a polynomial
-##' @param order an integer vector defining the new variable order
-##' @return a polynomial with the variables in the new order
+##' @param p a polynomial.
+##' @param order an integer vector defining the new variable order.
+##' @return A polynomial with the variables in the new order.
 ##' @export
 reorder_vars <- function(p,order) {
   if(any(duplicated(order))) warning("Invalid variable permutation")
@@ -505,16 +505,16 @@ reorder_vars <- function(p,order) {
 }
 
 
-##' Polynomial arithmetic
+##' Polynomial arithmetic.
 ##'
 ##' `poly_add` computes p1+p2, `poly_sub` computes p1-p2, `poly_mul`
 ##' computes p1*p2, and `poly_scale` computes a*p where a is a term.
 ##'
 ##' @title Polynomial arithmetic
-##' @param p1,p2 polynomials
-##' @param acoef the coefficient of a
-##' @param aexpt the exponent of a
-##' @return a polynomial
+##' @param p1,p2 polynomials.
+##' @param acoef the coefficient of a.
+##' @param aexpt the exponent of a.
+##' @return A polynomial.
 ##' @rdname poly_arithmetic
 ##' @export
 poly_add <- function(p1,p2) {
@@ -551,11 +551,11 @@ poly_scale <- function(acoef=1L,aexpt=0L,p1) {
 }
 
 
-##' Normalize a polynomial to have leading coefficient 1
+##' Normalize a polynomial to have unit leading coefficient.
 ##'
 ##' @title Normalize
-##' @param p a polynomial
-##' @return the normalized polynomial
+##' @param p a polynomial.
+##' @return The normalized polynomial.
 ##' @export
 normalize <- function(p) {
   if((lc <- p[[1L]]$coef) != 1)
@@ -567,10 +567,10 @@ normalize <- function(p) {
 ##' Compute the derivative of a polynomial.
 ##'
 ##' @title Derivative
-##' @param p a polynomial
+##' @param p a polynomial.
 ##' @param order vector of non-negative integers specifying the
-##' order of the derivative
-##' @return the polynomial that is the derivative of `p`.
+##' order of the derivative.
+##' @return The polynomial that is the derivative of `p`.
 ##' @export
 derivative <- function(p,order) {
   order <- as.integer(order)
@@ -604,17 +604,17 @@ derivative <- function(p,order) {
 ##'   polynomials
 ##' * `reduce_s` reduces a list of polynomials
 ##'
-##' For functions `reduce_pp`, `reduce_sp`, and `reduce_ss` the
-##' reductions are performed in a single pass, but for `reduce_ps` and
+##' For functions `reduce_pp` and `reduce_sp` the reductions are
+##' performed in a single pass, but for `reduce_ps`, `reduce_ss` and
 ##' `reduce_s` the reductions are iterated until the result cannot be
 ##' further reduced.
 ##'
 ##' @title Reduce
-##' @param p1 the polynomial to reduce
-##' @param p2 the polynomial to reduce by
-##' @param ps1 a list of polynomials to reduce
-##' @param ps2 a list of polynomials to reduce by
-##' @return the reduced polynomial
+##' @param p1 the polynomial to reduce.
+##' @param p2 the polynomial to reduce by.
+##' @param ps1 a list of polynomials to reduce.
+##' @param ps2 a list of polynomials to reduce by.
+##' @return The reduced polynomials.
 ##' @rdname reduce
 ##' @export
 reduce_pp <- function(p1,p2) {
@@ -710,6 +710,7 @@ reduce_sp <- function(ps1,p2) {
   if(any((ls <- lengths(ps1))==0L)) ps1[ls>0L] else ps1
 }
 
+
 ##' @rdname reduce
 ##' @export
 reduce_ss <- function(ps1,ps2) {
@@ -717,6 +718,7 @@ reduce_ss <- function(ps1,ps2) {
     ps1[[k]] <- reduce_ps(ps1[[k]],ps2)
   if(any((ls <- lengths(ps1))==0L)) ps1[ls>0L] else ps1
 }
+
 
 ##' @rdname reduce
 ##' @export
@@ -741,9 +743,9 @@ reduce_s <- function(ps1) {
 ##' Compute the S-polynomial of two polynomials.
 ##'
 ##' @title S-polynomial
-##' @param p1 a polynomial
-##' @param p2 a polynomial
-##' @return the S-polynomial
+##' @param p1 a polynomial.
+##' @param p2 a polynomial.
+##' @return The S-polynomial.
 ##' @export
 spoly <- function(p1,p2) {
 
@@ -806,11 +808,11 @@ spoly <- function(p1,p2) {
 }
 
 
-##' Compute the reduced Groebner basis of a set of polynomials
+##' Compute the reduced Groebner basis of a set of polynomials.
 ##'
 ##' @title Groebner basis
-##' @param ps a list of polynomials
-##' @return the Groebner basis
+##' @param ps a list of polynomials.
+##' @return The Groebner basis.
 ##' @export
 groebner <- function(ps) {
   ps <- reduce_s(ps)
@@ -837,9 +839,9 @@ groebner <- function(ps) {
 ##' Generate a set of monomials upto a given degree.
 ##'
 ##' @title Monomial set
-##' @param nvar the number of variables
-##' @param deg the degree of the monomials
-##' @return a list of integer vectors representing the monomial set
+##' @param nvar the number of variables.
+##' @param deg the degree of the monomials.
+##' @return A list of integer vectors representing the monomial set.
 ##' @export
 monomial_set <- function(nvar,deg) {
 
@@ -879,9 +881,9 @@ monomial_set <- function(nvar,deg) {
 ##' from a Groebner basis.
 ##'
 ##' @title Monomial basis
-##' @param gb a Groebner basis
-##' @param rexpts a list of reducible exponent vectors
-##' @return a list of the exponent vectors in the monomial basis
+##' @param gb a Groebner basis.
+##' @param rexpts a list of reducible exponent vectors.
+##' @return A list of the exponent vectors in the monomial basis.
 ##' @export
 monomial_basis <- function(gb) {
   monomial_basis0(lapply(gb,function(p) p[[1L]]$expt))
@@ -929,10 +931,10 @@ monomial_basis0 <- function(rexpts) {
 ##' multiplication by the `v`-th standard variable.
 ##'
 ##' @title Multiplication matrix
-##' @param v a variable index
-##' @param ms a list of the exponent vectors of the monomial basis
-##' @param gb a Groebner basis
-##' @return the multiplication matrix
+##' @param v a variable index.
+##' @param ms a list of the exponent vectors of the monomial basis.
+##' @param gb a Groebner basis.
+##' @return The multiplication matrix.
 ##' @export
 multiplication_matrix <- function(v,ms,gb) {
 
@@ -962,9 +964,9 @@ multiplication_matrix <- function(v,ms,gb) {
 ##' differentiation by the `v`-th standard variable.
 ##'
 ##' @title Derivative matrix
-##' @param v a variable index
-##' @param ms a list of the exponent vectors of the monomial basis
-##' @return the derivative matrix
+##' @param v a variable index.
+##' @param ms a list of the exponent vectors of the monomial basis.
+##' @return The derivative matrix.
 ##' @export
 derivative_matrix <- function(v,ms) {
   n <- length(ms)
@@ -983,11 +985,11 @@ derivative_matrix <- function(v,ms) {
 ##' Compute the Macaulay matrix for a polynomial system.
 ##'
 ##' @title Macaulay matrix
-##' @param ps a list of polynomials
-##' @param tdeg the degree of the Macaulay matrix
-##' @return a list with elements
-##'   * `M`: the Macaulay matrix
-##'   * `ms`: the monomial basis
+##' @param ps a list of polynomials.
+##' @param tdeg the degree of the Macaulay matrix.
+##' @return A list with elements:
+##'   * `M`: the Macaulay matrix,
+##'   * `ms`: the monomial basis.
 ##' @export
 macaulay_matrix <- function(ps,tdeg=sum(degs-1L)+1L) {
 
@@ -1020,12 +1022,12 @@ macaulay_matrix <- function(ps,tdeg=sum(degs-1L)+1L) {
 ##' reduce a matrix to reduced row echelon form by Gauss-Jordan
 ##' elimination.
 ##'
-##' @title Gauss-Jordan elimination
-##' @param A a matrix
-##' @return a list with elements
-##'   * `A`: the reduced matrix
-##'   * `reduced`: the indices of the reduced columns
-##'   * `rank`: the rank of the matrix
+##' @title Gauss-Jordan eliminationo
+##' @param A a matrix.
+##' @return A list with elements:
+##'   * `A`: the reduced matrix,
+##'   * `reduced`: the indices of the reduced columns,
+##'   * `rank`: the rank of the matrix.
 ##' @export
 gauss_jordan <- function(A) {
 
@@ -1067,11 +1069,11 @@ gauss_jordan <- function(A) {
 ##' monomial basis.
 ##'
 ##' @title Macaulay monomial basis
-##' @param ps a list of polynomials
-##' @return a list with elements
-##'   * `A`: reduction matrix
-##'   * `term`: reducible terms
-##'   * `basis`: the monomial basis
+##' @param ps a list of polynomials.
+##' @return a list with elements:
+##'   * `A`: reduction matrix,
+##'   * `term`: reducible terms,
+##'   * `basis`: the monomial basis.
 ##' @export
 macaulay_monomial_basis <- function(ps) {
   mc <- macaulay_matrix(ps)
@@ -1089,9 +1091,9 @@ macaulay_monomial_basis <- function(ps) {
 ##' monomial basis.
 ##'
 ##' @title Multiplication matrix from a Macaulay monomial basis
-##' @param v a variable index
-##' @param mb an object returned by [macaulay_monomial_basis()]
-##' @return the multiplication matrix
+##' @param v a variable index.
+##' @param mb an object returned by [macaulay_monomial_basis()].
+##' @return The multiplication matrix.
 ##' @export
 macaulay_multiplication_matrix <- function(v,mb) {
 
@@ -1109,10 +1111,10 @@ macaulay_multiplication_matrix <- function(v,mb) {
 ##' iterations of Newton's method to polish the root.
 ##'
 ##' @title Newton's method
-##' @param ps a list of polynomials
-##' @param x a vector or matrix of initial estimates
-##' @param n the number of iterations
-##' @return a root of the polynomial system
+##' @param ps a list of polynomials.
+##' @param x a vector or matrix of initial estimates.
+##' @param n the number of iterations.
+##' @return A root of the polynomial system.
 ##' @export
 newton_polish <- function(ps,x,n) {
   ## Number of variables
@@ -1150,10 +1152,10 @@ newton_polish <- function(ps,x,n) {
 ##' as distinct, and the bases for some eigenspaces are split.
 ##'
 ##' @title Eigenbasis
-##' @param A a matrix
+##' @param A a matrix.
 ##' @param tol tolerance used to determine if two eigenvalues differ.
-##' @return a list of matrices, one for each distinct eigenvalue, the
-##'   columns of each are the eigenbasis for that eigenvalue
+##' @return A list of matrices, one for each distinct eigenvalue, the
+##'   columns of each are the eigenbasis for that eigenvalue.
 ##' @export
 eigenbasis <- function(A, tol=1e-6) {
 
@@ -1236,11 +1238,11 @@ eigenbasis2 <- function(A,tol=1.0E-6) {
 ##' as distinct, and the bases for some eigenspaces are split.
 ##'
 ##' @title Common eigenbasis
-##' @param As a list of commuting matrices
+##' @param As a list of commuting matrices.
 ##' @param tol tolerance used to determine if two eigenvalues differ.
-##' @param left if `TRUE`, compute a common left eigenbasis
-##' @return a list of matrices, the columns of each matrix are the
-##'   common eigenbasis for the corresponding matrix in `As`
+##' @param left if `TRUE`, compute a common left eigenbasis.
+##' @return A list of matrices, the columns of each matrix are the
+##'   common eigenbasis for the corresponding matrix in `As`.
 ##' @export
 common_eigenbasis <- function(As,tol=1e-6,left=FALSE) {
 
@@ -1284,7 +1286,7 @@ common_eigenbasis0 <- function(As,tol=1e-6,left=FALSE) {
 }
 
 
-##' Extract the roots of a polynomial system
+##' Extract the roots of a polynomial system.
 ##'
 ##' `roots` computes the roots of a polynomial system from the
 ##' eigenvalues of its multiplication matrices using a common basis
@@ -1292,10 +1294,10 @@ common_eigenbasis0 <- function(As,tol=1e-6,left=FALSE) {
 ##' same order as the multiplication matrices.
 ##'
 ##' @title Roots from eigenvalues and eigenvectors
-##' @param Ms a list of multiplication matrices
-##' @param Bs an eigenbasis
-##' @param unique In degenerate cases, return each root only once
-##' @return a matrix where each row is a root of the polynomial system
+##' @param Ms a list of multiplication matrices.
+##' @param Bs an eigenbasis.
+##' @param unique In degenerate cases, return each root only once.
+##' @return A matrix where each row is a root of the polynomial system.
 ##' @rdname roots
 ##' @export
 roots <- function(Ms,Bs,unique=TRUE) {
@@ -1313,8 +1315,8 @@ roots <- function(Ms,Bs,unique=TRUE) {
 ##' the basis `ms` at the roots of the polynomial system.
 ##'
 ##' @title Roots from eigenvectors
-##' @param ms a monomial basis
-##' @param Bs a common left eigenbasis
+##' @param ms a monomial basis.
+##' @param Bs a common left eigenbasis.
 ##' @return a matrix where each row is a root of the polynomial system
 ##' @export
 roots_left_eigenbasis <- function(ms,Bs) {
@@ -1336,7 +1338,7 @@ roots_left_eigenbasis <- function(ms,Bs) {
 }
 
 
-##' Find the roots of a polynomial system
+##' Find the roots of a polynomial system.
 ##'
 ##' These functions find the roots of a polynomial system from the
 ##' common eigenbasis of the multiplication matrices.
@@ -1349,11 +1351,11 @@ roots_left_eigenbasis <- function(ms,Bs) {
 ##' coefficients.
 ##'
 ##' @title Roots of a polynomial system
-##' @param ps a list of polynomials
-##' @param gb a Groebner basis
-##' @param newton the number of Newton iterations used to refine roots
+##' @param ps a list of polynomials.
+##' @param gb a Groebner basis.
+##' @param newton the number of Newton iterations used to refine roots.
 ##' @param tol tolerance used to determine if two eigenvalues differ.
-##' @return a matrix where each row is a root of the polynomial system
+##' @return A matrix where each row is a root of the polynomial system.
 ##' @export
 solve_polys <- function(ps,gb=groebner(ps),newton=0,tol=1.0E-6) {
   ms <- monomial_basis(gb)
@@ -1379,11 +1381,22 @@ nsolve_polys <- function(ps,newton=0,tol=1.0E-6) {
 
 
 
-##' Test if a polynomial is univariate.
+##' Test if a polynomial is univariate and extract the vector of
+##' coefficients.
 ##'
-##' @title polynomial is univariate
-##' @param p a polynomial
-##' @return The index of the variable if p is univariate, 0 otherwise
+##' The function `is_univariate` tests if `p` is a polynomial in a
+##' single variable, returning the index of the variable if it is and
+##' zero otherwise. The function `as_univariate` extracts the vector
+##' of coefficients of a polynomial that is univariate in the variable
+##' with index `v`.
+##'
+##' @title Univariate polynomial
+##' @param p a polynomial.
+##' @param v the variable index.
+##' @return `is_univariate` returns the index of the variable if p is
+##'   univariate, 0 otherwise. `as_univariate` returns the vector of
+##'   coefficients of a univariate polynomial.
+##' @rdname univariate
 ##' @export
 is_univariate <- function(p) {
   expt <- 0
@@ -1391,6 +1404,8 @@ is_univariate <- function(p) {
   if(sum(expt)==1L) which(expt==1L) else 0
 }
 
+##' @rdname univariate
+##' @export
 as_univariate <- function(p,v) {
   if(length(p)==0L) return(0L)
   ord <- 0

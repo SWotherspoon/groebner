@@ -7,14 +7,14 @@
 multiplication_matrix(v, ms, gb)
 }
 \arguments{
-\item{v}{a variable index}
+\item{v}{a variable index.}
 
-\item{ms}{a list of the exponent vectors of the monomial basis}
+\item{ms}{a list of the exponent vectors of the monomial basis.}
 
-\item{gb}{a Groebner basis}
+\item{gb}{a Groebner basis.}
 }
 \value{
-the multiplication matrix
+The multiplication matrix.
 }
 \description{
 Compute the multiplication matrix for a variable.

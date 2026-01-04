@@ -7,12 +7,12 @@
 derivative_matrix(v, ms)
 }
 \arguments{
-\item{v}{a variable index}
+\item{v}{a variable index.}
 
-\item{ms}{a list of the exponent vectors of the monomial basis}
+\item{ms}{a list of the exponent vectors of the monomial basis.}
 }
 \value{
-the derivative matrix
+The derivative matrix.
 }
 \description{
 Compute the derivative matrix for a variable.

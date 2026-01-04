@@ -7,10 +7,10 @@
 poly_degree(p)
 }
 \arguments{
-\item{p}{a polynomial}
+\item{p}{a polynomial.}
 }
 \value{
-the degree of the polynomial
+The degree of the polynomial.
 }
 \description{
 Compute the degree of a polynomial.

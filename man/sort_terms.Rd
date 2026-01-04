@@ -7,10 +7,10 @@
 sort_terms(terms)
 }
 \arguments{
-\item{terms}{a list of monomials}
+\item{terms}{a list of monomials.}
 }
 \value{
-the sorted list
+The sorted list.
 }
 \description{
 Sort a list of polynomial terms.

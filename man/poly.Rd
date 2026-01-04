@@ -10,13 +10,13 @@ poly(tms)
 .poly(tms)
 }
 \arguments{
-\item{tms}{a list of monomials}
+\item{tms}{a list of monomials.}
 }
 \value{
-a poly object
+A poly object.
 }
 \description{
-Create a polynomial
+Create a polynomial.
 }
 \details{
 A polynomial is represented as a list of monomials, sorted

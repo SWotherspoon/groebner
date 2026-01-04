@@ -4,43 +4,48 @@
 \alias{reduce_pp}
 \alias{reduce_ps}
 \alias{reduce_sp}
+\alias{reduce_ss}
 \alias{reduce_s}
 \title{Reduce}
 \usage{
 reduce_pp(p1, p2)
 
-reduce_ps(p, ps)
+reduce_ps(p1, ps2)
 
-reduce_sp(ps, p)
+reduce_sp(ps1, p2)
 
-reduce_s(ps)
+reduce_ss(ps1, ps2)
+
+reduce_s(ps1)
 }
 \arguments{
-\item{p1}{a polynomial}
+\item{p1}{the polynomial to reduce.}
 
-\item{p2}{a polynomial}
+\item{p2}{the polynomial to reduce by.}
 
-\item{p}{a polynomial}
+\item{ps2}{a list of polynomials to reduce by.}
 
-\item{ps}{a list of polynomials}
+\item{ps1}{a list of polynomials to reduce.}
 }
 \value{
-the reduced polynomial
+The reduced polynomials.
 }
 \description{
 Reduce polynomials.
 }
 \details{
-There are four functions for reducing polynomials:
+There are five functions for reducing polynomials:
 \itemize{
 \item \code{reduce_pp} reduces a polynomial by another polynomial
 \item \code{reduce_ps} reduces a polynomial by a list of polynomials
 \item \code{reduce_sp} reduces a list of polynomials by a polynomial
+\item \code{reduce_ss} reduces a list of polynomials by a list of
+polynomials
 \item \code{reduce_s} reduces a list of polynomials
 }
 
-For functions \code{reduce_pp} and \code{reduce_sp} the reductions are
-performed in a single pass, but for \code{reduce_ps} and \code{reduce_s} the
-reductions are iterated until the result cannot be further
-reduced.
+For functions \code{reduce_pp}, \code{reduce_sp}, and \code{reduce_ss} the
+reductions are performed in a single pass, but for \code{reduce_ps} and
+\code{reduce_s} the reductions are iterated until the result cannot be
+further reduced.
 }

@@ -7,15 +7,15 @@
 pterm(coef, expt)
 }
 \arguments{
-\item{coef}{the coefficient of the term}
+\item{coef}{the coefficient of the term.}
 
-\item{expt}{integer vector of variable exponents}
+\item{expt}{integer vector of variable exponents.}
 }
 \value{
-a pterm object
+A pterm object.
 }
 \description{
-Create  monomial term
+Create a monomial term.
 }
 \details{
 A monomial term is represented as a coefficient and an integer

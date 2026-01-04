@@ -7,14 +7,14 @@
 newton_polish(ps, x, n)
 }
 \arguments{
-\item{ps}{a list of polynomials}
+\item{ps}{a list of polynomials.}
 
-\item{x}{a vector or matrix of initial estimates}
+\item{x}{a vector or matrix of initial estimates.}
 
-\item{n}{the number of iterations}
+\item{n}{the number of iterations.}
 }
 \value{
-a root of the polynomial system
+A root of the polynomial system.
 }
 \description{
 Polish a root of a polynomial system using Newton's method.

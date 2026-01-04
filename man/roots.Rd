@@ -7,17 +7,17 @@
 roots(Ms, Bs, unique = TRUE)
 }
 \arguments{
-\item{Ms}{a list of multiplication matrices}
+\item{Ms}{a list of multiplication matrices.}
 
-\item{Bs}{an eigenbasis}
+\item{Bs}{an eigenbasis.}
 
-\item{unique}{In degenerate cases, return each root only once}
+\item{unique}{In degenerate cases, return each root only once.}
 }
 \value{
-a matrix where each row is a root of the polynomial system
+A matrix where each row is a root of the polynomial system.
 }
 \description{
-Extract the roots of a polynomial system
+Extract the roots of a polynomial system.
 }
 \details{
 \code{roots} computes the roots of a polynomial system from the
