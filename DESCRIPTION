@@ -10,10 +10,10 @@ Imports:
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 Suggests: 
     knitr,
     rmarkdown
 VignetteBuilder: knitr
 URL: https://github.com/SWotherspoon/groebner
 BugReports: https://github.com/SWotherspoon/groebner/issues
+Config/roxygen2/version: 8.0.0

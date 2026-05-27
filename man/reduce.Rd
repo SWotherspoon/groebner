@@ -44,8 +44,8 @@ polynomials
 \item \code{reduce_s} reduces a list of polynomials
 }
 
-For functions \code{reduce_pp}, \code{reduce_sp}, and \code{reduce_ss} the
-reductions are performed in a single pass, but for \code{reduce_ps} and
+For functions \code{reduce_pp} and \code{reduce_sp} the reductions are
+performed in a single pass, but for \code{reduce_ps}, \code{reduce_ss} and
 \code{reduce_s} the reductions are iterated until the result cannot be
 further reduced.
 }
